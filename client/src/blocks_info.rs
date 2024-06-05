@@ -2,7 +2,6 @@ use {
     dotenv,
     reqwest,
     tokio,
-    serde_json::Result,
     crate::blocks_data::BlocksData,
 };
 
