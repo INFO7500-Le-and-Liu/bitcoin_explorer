@@ -1,12 +1,15 @@
 extern crate mysql;
-use mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool, PooledConn};
-use std::result::Result as StdResult;
+use{ 
+    mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool, PooledConn},
+    std::result::Result as StdResult,
+    dotenv,
+};
 
 pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
     let builder = OptsBuilder::new()
-        .ip_or_hostname(Some("localhost"))
-        .user(Some("root"))
-        .pass(Some("12345678"));
+        .ip_or_hostname(Some(dotenv::var("DB_HOSTNAME").expect("Failed to load hostname")))
+        .user(Some(dotenv::var("DB_USERNAME").expect("Failed to load username")))
+        .pass(Some(dotenv::var("DB_PASSWORD").expect("Failed to load password")));
 
     let pool = Pool::new(builder)?;
     let conn = pool.get_conn()?;
@@ -27,6 +30,7 @@ pub fn create_database_and_table(conn: &mut PooledConn) -> StdResult<(), MySQLEr
 pub fn insert_data(conn: &mut PooledConn, height: u64) -> StdResult<(), MySQLError> {
     let query = format!("INSERT INTO heights (height) VALUES ({})", height);
     conn.query_drop(query)?;
+    println!("Insert Done");
     Ok(())
 }
 
