@@ -13,10 +13,10 @@ To configure the application properly, you must create a `.env` file containing 
 
    ```plaintext
    # Blockchain API Configuration
-   API_KEY = "56ddd388-5229-4dc4-b307-54d4d0f579c6"
+   API_KEY = ""
 
    # Database Configuration
-   DB_HOSTNAME = "localhost"
-   DB_USERNAME = "root"
-   DB_PASSWORD = "12345678"
-   DB_DATABASE = "demo"
+   DB_HOSTNAME = ""
+   DB_USERNAME = ""
+   DB_PASSWORD = ""
+   DB_DATABASE = ""
