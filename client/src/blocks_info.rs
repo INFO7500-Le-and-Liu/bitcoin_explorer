@@ -2,7 +2,7 @@ use {
     dotenv,
     reqwest,
     tokio,
-    crate::blocks_data::BlocksData,
+    crate::blocks_model::BlocksData,
 };
 
 const HOST_ROOT: &str = "https://blockchain.info";
