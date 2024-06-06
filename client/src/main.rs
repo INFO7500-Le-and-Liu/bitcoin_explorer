@@ -5,29 +5,33 @@ mod blocks_data;
 mod blocks_info;
 mod init_database;
 
-// use {
-//     crate::blocks_data::BlocksData,
-//     dotenv,
-//     std::{io, thread, time},
-// };
-use init_database::get_mysql_connection;
+use {
+    crate::blocks_data::BlocksData, init_database::insert_data, mysql::PooledConn,
+    // dotenv,
+    // std::{io, thread, time},
+};
+use init_database::init_database;
 
 
 fn main() {
-    match get_mysql_connection() {
-        Ok(_conn) => {
-            println!("Successfully connected to the database!");
-            // operation
-            
+
+    let response : BlocksData= blocks_info::latest_blocks_request();
+    println!("{:#?}", response);// debug
+
+    let mut conn:PooledConn = match init_database() {
+        Ok(conn) => {
+            println!("Database initialized successfully with connection");
+            conn
+        } Err(e) => {
+            eprintln!("Failed to initialize the database: {:#?}", e);
+            return;
         }
-        Err(e) => {
-            eprintln!("Failed to connect to the database: {:?}", e);
-        }
+    };
+
+    if let Err(e) = insert_data(&mut conn, response.height) {
+        eprintln!("Error inserting data: {:?}", e);
+        return; // end the program
     }
 
-
-
-    //let response : BlocksData= blocks_info::latest_blocks_request();
-    // println!("{:#?}", response);
 }
 

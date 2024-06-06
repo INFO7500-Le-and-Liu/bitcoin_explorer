@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 dotenv = "0.15.0"
-async-std = {vsersion = "1", features = ["attributes", "tokio1"]}
+async-std = { version = "1", features = ["attributes", "tokio1"] }
 reqwest = {version = "0.10", features = ["blocking", "json"]}
 tokio = {version = "0.2.22", features = ["full"]}
 serde = "1.0"
