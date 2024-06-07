@@ -1,0 +1,9 @@
+<!-- src/app/client-list/client-list.component.html -->
+<div>
+  <h1>Client List</h1>
+  <ul>
+    <li *ngFor="let client of clients">
+      {{ client.name }} - {{ client.height }} cm
+    </li>
+  </ul>
+</div>
