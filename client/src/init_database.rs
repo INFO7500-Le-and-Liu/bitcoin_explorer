@@ -17,10 +17,10 @@ pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
 } 
 
 pub fn create_database_and_table(conn: &mut PooledConn) -> StdResult<(), MySQLError> {
-    conn.query_drop("CREATE DATABASE IF NOT EXISTS bitcoin_blocks")?;
-    conn.query_drop("USE bitcoin_blocks")?;
+    conn.query_drop("CREATE DATABASE IF NOT EXISTS bitcoin_blockchains")?;
+    conn.query_drop("USE bitcoin_blockchains")?;
     conn.query_drop(
-        "CREATE TABLE IF NOT EXISTS heights (
+        "CREATE TABLE IF NOT EXISTS blocks (
             height INT NOT NULL
         )",
     )?;
@@ -28,7 +28,7 @@ pub fn create_database_and_table(conn: &mut PooledConn) -> StdResult<(), MySQLEr
 }
 
 pub fn insert_data(conn: &mut PooledConn, height: u64) -> StdResult<(), MySQLError> {
-    let query = format!("INSERT INTO heights (height) VALUES ({})", height);
+    let query = format!("INSERT INTO blocks (height) VALUES ({})", height);
     conn.query_drop(query)?;
     println!("Insert Done");
     Ok(())
