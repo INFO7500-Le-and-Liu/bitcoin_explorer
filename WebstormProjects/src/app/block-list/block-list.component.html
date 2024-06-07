@@ -1,12 +1,5 @@
-<table>
-  <thead>
-  <tr>
-    <th>Height</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let height of heights">
-    <td>{{ heights }}</td>
-  </tr>
-  </tbody>
-</table>
+<ul>
+  <li *ngFor="let record of records">
+    {{ record.height }}
+  </li>
+</ul>

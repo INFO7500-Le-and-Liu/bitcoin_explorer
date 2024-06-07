@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Record } from './record.model';
 
-interface Record {
-  id?: number;
-  height: number;
-  name?: string;
-}
+// interface Record {
+//   height: number;
+// }
 
 @Component({
   selector: 'app-root',
@@ -18,7 +17,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<Record[]>('http://localhost:8000/data').subscribe(data => {
+    this.http.get<Record[]>('http://localhost:8080/blocks').subscribe(data => {
       this.records = data;
     });
   }
