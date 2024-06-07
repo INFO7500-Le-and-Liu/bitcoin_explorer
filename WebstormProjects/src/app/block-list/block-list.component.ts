@@ -7,13 +7,13 @@ import { BlockService } from '../block.service';
   styleUrls: ['./block-list.component.css']
 })
 export class BlockListComponent implements OnInit {
-  heights: number[] = [];
+  heights: any;
 
-  constructor(private blockService: BlockService) { }
+  constructor(private dataService: BlockService) { }
 
   ngOnInit(): void {
-    this.blockService.getHeights().subscribe(heights => {
-      this.heights = heights;
+    this.dataService.getHeights().subscribe((response: any) => {
+      this.heights = response;
     });
   }
 }
