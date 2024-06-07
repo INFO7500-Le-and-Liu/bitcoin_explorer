@@ -5,18 +5,14 @@ mod blocks_model;
 mod blocks_info;
 mod init_database;
 
-// use async_std::task::sleep;
-
 use {
-    crate::blocks_model::BlocksData, init_database::insert_data,
+    crate::blocks_model::BlocksData, init_database::{insert_data, init_database},
     // tokio::time::{sleep, Duration},
-    init_database::init_database,
     std::thread::sleep,
     std::time::Duration,    
     // dotenv,
     // std::{io, thread, time},
 };
-// use init_database::init_database;
 
 fn main() {
 
