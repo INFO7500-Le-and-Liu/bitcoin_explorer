@@ -4,19 +4,19 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { ClientListComponent } from './client-list/client-list.component';
-import { ClientService } from './client.service';
+import { BlockListComponent } from './block-list/block-list.component';
+import { BlockService } from "./block.service";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ClientListComponent
+    BlockListComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule
   ],
-  providers: [ClientService],
+  providers: [BlockService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

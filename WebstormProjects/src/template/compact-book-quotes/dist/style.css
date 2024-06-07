@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Roboto Flex";
+  src: url("https://digitalupgrade.com/images/misc/RobotoFlex-VariableFont_GRADXTRAYOPQYTASYTDEYTFIYTLCYTUCopszslntwdthwght.woff2") format("woff2");
+}
+body {
+  font-family: "Roboto Flex", sans-serif;
+}
+
+.group-hover\:transition-transform {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  animation-direction: alternate;
+}
+
+.num {
+  font-size: 10rem;
+  line-height: 0.9;
+  font-weight: 550;
+  font-variation-settings: "wdth" 35, "YTFI" 788;
+}
+
+.stretch {
+  font-weight: 500;
+  font-variation-settings: "wdth" 35;
+  writing-mode: vertical-rl;
+}
