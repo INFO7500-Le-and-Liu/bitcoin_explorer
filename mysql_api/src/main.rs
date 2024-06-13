@@ -1,9 +1,11 @@
 #[macro_use] extern crate rocket;
 
 use rocket::serde::json::Json;
-use std::sync::Arc;
-use rocket::figment::{Figment, providers::{Format, Toml, Env}};
-use mysql::Pool;
+
+use rocket::figment::Figment;
+
+// use rocket::figment::{Figment, providers::{Format, Toml, Env}};
+// use mysql::Pool;
 
 
 mod db;
