@@ -1,6 +1,7 @@
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "lowercase")]
 pub struct NewsData {
+    pub id: String,
     pub title: String,
     pub url: String,
     pub body: String,
@@ -9,5 +10,6 @@ pub struct NewsData {
 }
 #[derive(Deserialize, Debug)]
 pub struct NewsResponse {
-    pub Data: Vec<NewsData>,
+    #[serde(rename = "Data")]
+    pub data: Vec<NewsData>,
 }

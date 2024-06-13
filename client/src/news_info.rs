@@ -2,7 +2,7 @@ use {
     dotenv,
     reqwest,
     tokio,
-    crate::news_model::{NewsData,NewsResponse}
+    crate::news_model::NewsResponse
 };
 
 #[tokio::main]
