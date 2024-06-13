@@ -3,44 +3,65 @@ extern crate serde_derive;
 
 mod blocks_model;
 mod blocks_info;
+mod news_info;
 mod init_database;
+mod news_model;
+
 
 use {
-    crate::blocks_model::BlocksData, 
-    blocks_model::LatestBlock, 
-    init_database::{init_database, insert_data}, 
-    std::{thread::sleep, time::Duration}    
+    crate::blocks_model::BlocksData, blocks_model::LatestBlock, init_database::{init_database, insert_block_data,insert_news_data}, std::{thread::sleep, time::Duration}    
     // dotenv,
     // std::{io, thread, time},
 };
 
 fn main() {
 
-    let mut height = 847680;
+
+
+    let mut height = 847770;
+    let mut timer = 0;
     loop {
-       
+        // if one block take 10 mins, 144 blocks roughly take 1 day
+        // 24 * 60 / 10 = 144
+        if timer % 144 == 0 { 
+            timer /= 144;
+            let news:news_model::NewsResponse  = news_info::request_news();
+            println!("news id:{:#?}", news.data[1].id);
+        
+            match init_database() {
+                Ok(mut conn) => {
+                    println!("Database initialized successfully with connection");
+                    for i in 0..20 {
+                        insert_news_data(&mut conn, &news.data[i]).expect("failed to insert data");
+                    }
+                    conn
+                }
+                Err(e) => {
+                    eprintln!("Failed to initialize the database: {:#?}", e);
+                    return;
+                }
+            };
+        }
+        
         let response : BlocksData = blocks_info::request_block_by_height(&height);
         let latest : LatestBlock = blocks_info::latest_blocks_request();
-
-        println!("{:#?}", response);// debug
-        println!("{:#?}", latest);
-
-        // let block_time = response.unix_time_to_datetime();
-        // println!("----{}",block_time);
-        // let block_time = block_time.format("%Y-%m-%d %H:%M:%S").to_string();
-        // println!("{}",block_time);
-
-        if latest.block_index == response.block_index {
+        
+        // debug
+        println!("block index:{:#?}", response.block_index);
+        println!("LATEST index:{:#?}", latest.block_index);
+        
+        if latest.block_index == response.block_index - 1 {
             println!("sleeping...");
             sleep(Duration::from_secs(1200));
             continue;
         }
 
-        // let mut conn:PooledConn =
+            
+            
         match init_database() {
             Ok(mut conn) => {
                 println!("Database initialized successfully with connection");
-                insert_data(&mut conn, &response).expect("failed to insert data");
+                insert_block_data(&mut conn, &response).expect("failed to insert data");
                 conn
             } Err(e) => {
                 eprintln!("Failed to initialize the database: {:#?}", e);
@@ -48,7 +69,9 @@ fn main() {
             }
         };
         height += 1;
+        timer += 1;
         sleep(Duration::from_secs(10));
+        println!("---------next round----------") //debug
     }
 }
 
