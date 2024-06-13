@@ -1,6 +1,6 @@
 extern crate mysql;
 use{ 
-    mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool, PooledConn},
+    mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool},
     std::result::Result as StdResult,
     crate::model::BlockData,
     dotenv,

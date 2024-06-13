@@ -1,8 +1,8 @@
 extern crate mysql;
+// use dotenv::dotenv;
+// use std::env;
 use{ 
-    mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool, PooledConn},
-    std::result::Result as StdResult,
-    dotenv,
+    crate::blocks_model::BlocksData, dotenv::dotenv, mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool, PooledConn}, std::result::Result as StdResult
 };
 
 pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
@@ -17,19 +17,45 @@ pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
 } 
 
 pub fn create_database_and_table(conn: &mut PooledConn) -> StdResult<(), MySQLError> {
-    conn.query_drop("CREATE DATABASE IF NOT EXISTS bitcoin_blockchains")?;
-    conn.query_drop("USE bitcoin_blockchains")?;
-    conn.query_drop(
-        "CREATE TABLE IF NOT EXISTS blocks (
-            height INT NOT NULL
-        )",
-    )?;
+    dotenv().ok();
+    let database_name = dotenv::var("DB_DATABASE").expect("Failed to load database name");
+    let table_name = dotenv::var("DB_TABLE").expect("Failed to load table name");
+
+    let s1 = format!("CREATE DATABASE IF NOT EXISTS {}",&database_name);
+    let s2 = format!("USE {}",&database_name);
+    let s3 = format!("CREATE TABLE IF NOT EXISTS {} (
+        hash TEXT,
+        time TIMESTAMP ,
+        block_index INTEGER ,
+        height INTEGER PRIMARY KEY,
+        fee INTEGER ,
+        n_tx INTEGER 
+        )",table_name);
+
+    conn.query_drop(s1)?;
+    conn.query_drop(s2)?;
+    conn.query_drop(s3)?;
     Ok(())
 }
 
-pub fn insert_data(conn: &mut PooledConn, height: u64) -> StdResult<(), MySQLError> {
-    let query = format!("INSERT INTO blocks (height) VALUES ({})", height);
-    conn.query_drop(query)?;
+pub fn insert_data(conn: &mut PooledConn, block: &BlocksData) -> StdResult<(), MySQLError> {
+    dotenv().ok();
+    let table_name = dotenv::var("DB_TABLE").expect("Failed to load table name");
+
+    // Convert Unix time to normal time using timestamp_opt
+    let datetime = block.unix_time_to_datetime();
+    let date_str = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
+
+
+    let insert_sql = format!("
+    INSERT INTO {} (hash, time, block_index, height, fee, n_tx)
+    VALUES (\"{}\", \"{}\", {}, {}, {}, {})
+    ", table_name, block.hash, date_str, block.block_index, block.height, block.fee, block.n_tx);
+
+    println!("insert query:{}", insert_sql);
+
+    conn.query_drop(insert_sql)?;
+
     println!("Insert Done");
     Ok(())
 }

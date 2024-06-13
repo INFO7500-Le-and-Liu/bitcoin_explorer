@@ -21,3 +21,5 @@ Cargo.lock
 .venv*
 venv*
 ENV/
+
+.DS_store

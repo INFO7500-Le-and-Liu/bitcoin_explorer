@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Record } from './record.model';
 
-interface Record {
-  id?: number;
-  height: number;
-  name?: string;
-}
+// interface Record {
+//   height: number;
+// }
 
 @Component({
   selector: 'app-root',
