@@ -11,12 +11,13 @@ import { Record } from "../record.model";
 export class BlockListComponent implements OnInit {
   records: Record[] = [];
 
+
   constructor(private dataService: BlockService) { }
 
   ngOnInit(): void {
     this.dataService.getHeights().subscribe(data => {
       this.records = data;
-      console.log(this.records);  // Debug: 查看返回的数据
+      console.log(this.records);  // Debug: return value
     });
   }
 }
