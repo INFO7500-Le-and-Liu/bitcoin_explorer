@@ -17,12 +17,12 @@ pub struct BlocksData {
 }
 impl BlocksData {
     pub fn unix_time_to_datetime(&self) -> DateTime<Utc> {
-        // Unix时间戳是从1970年1月1日开始计算的秒数或者毫秒数
-        // 这里我们假设它是秒数
+        // The Unix timestamp is the number of seconds or milliseconds counted since January 1, 1970 
+        // Here we assume it is seconds
         let duration = std::time::Duration::from_secs(self.time as u64);
-        // 将duration转换为SystemTime
+        // Convert duration to SystemTime
         let system_time = SystemTime::UNIX_EPOCH.checked_add(duration).unwrap();
-        // 将SystemTime转换为DateTime<Utc>
+        // Convert SystemTime to DateTime<Utc>
         DateTime::<Utc>::from(system_time)
     }
 }
