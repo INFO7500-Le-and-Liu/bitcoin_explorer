@@ -6,6 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BlockListComponent } from './block-list/block-list.component';
 import { BlockService } from "./block.service";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from "@angular/material/table";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { BlockService } from "./block.service";
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatCardModule
   ],
   providers: [BlockService],
   bootstrap: [AppComponent]
