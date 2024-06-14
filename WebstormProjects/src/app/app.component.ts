@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Record } from './record.model';
-
 
 interface Block {
   hash: string;
@@ -10,6 +8,7 @@ interface Block {
   height: number;
   fee: number;
   n_tx: number;
+}
 
 @Component({
   selector: 'app-root',

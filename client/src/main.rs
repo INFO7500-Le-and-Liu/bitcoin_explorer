@@ -18,7 +18,7 @@ fn main() {
 
 
 
-    let mut height = 847843;
+    let mut height = 847855;
     let mut timer = 0;
     loop {
         // if one block take 10 mins, 144 blocks roughly take 1 day
@@ -42,8 +42,9 @@ fn main() {
                 }
             };
         }
-        
+        println!("request block: {} ...",height);
         let response : BlocksData = blocks_info::request_block_by_height(&height);
+        println!("request latest block ...");
         let latest : LatestBlock = blocks_info::latest_blocks_request();
         
         // debug
@@ -54,9 +55,7 @@ fn main() {
             println!("sleeping...");
             sleep(Duration::from_secs(1200));
             continue;
-        }
-
-            
+        }            
             
         match init_database() {
             Ok(mut conn) => {
@@ -70,8 +69,9 @@ fn main() {
         };
         height += 1;
         timer += 1;
+        println!("---------next round----------");//debug
         sleep(Duration::from_secs(10));
-        println!("---------next round----------") //debug
+       
     }
 }
 
