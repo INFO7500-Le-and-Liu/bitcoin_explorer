@@ -20,7 +20,7 @@ pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
 
 pub fn get_news(conn: &mut mysql::PooledConn) -> StdResult<Vec<NewsData>, MySQLError> {
     let news: Vec<NewsData> = conn.query_map(
-        "SELECT id, title, url, body, source, tags FROM news",
+        "SELECT id, title, url, body, source, tags FROM news ORDER BY DESC",
         |(id, title, url, body, source, tags)| NewsData { 
             id, 
             title, 

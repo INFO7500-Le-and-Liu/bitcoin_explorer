@@ -16,8 +16,6 @@ use {
 
 fn main() {
 
-
-
     let mut height = 847770;
     let mut timer = 0;
     loop {
@@ -50,7 +48,7 @@ fn main() {
         println!("block index:{:#?}", response.block_index);
         println!("LATEST index:{:#?}", latest.block_index);
         
-        if latest.block_index == response.block_index - 1 {
+        if response.block_index == latest.block_index - 1 {
             println!("sleeping...");
             sleep(Duration::from_secs(1200));
             continue;
