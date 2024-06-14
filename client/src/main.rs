@@ -18,7 +18,7 @@ fn main() {
 
 
 
-    let mut height = 847770;
+    let mut height = 847843;
     let mut timer = 0;
     loop {
         // if one block take 10 mins, 144 blocks roughly take 1 day
@@ -49,8 +49,8 @@ fn main() {
         // debug
         println!("block index:{:#?}", response.block_index);
         println!("LATEST index:{:#?}", latest.block_index);
-        
-        if latest.block_index == response.block_index - 1 {
+
+        if response.block_index == latest.block_index - 1 {
             println!("sleeping...");
             sleep(Duration::from_secs(1200));
             continue;
