@@ -1,9 +1,9 @@
 extern crate mysql;
 use{ 
-    mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool, PooledConn},
-    std::result::Result as StdResult,
-    crate::model::BlockData,
-    dotenv,
+    crate::model::{BlockData, NewsData}, 
+    dotenv, 
+    mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool}, 
+    std::result::Result as StdResult
 };
 
 pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
@@ -18,10 +18,32 @@ pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
 
 } 
 
+pub fn get_news(conn: &mut mysql::PooledConn) -> StdResult<Vec<NewsData>, MySQLError> {
+    let news: Vec<NewsData> = conn.query_map(
+        "SELECT id, title, url, body, source, tags FROM news",
+        |(id, title, url, body, source, tags)| NewsData { 
+            id, 
+            title, 
+            url, 
+            body, 
+            source, 
+            tags
+         },
+    )?;
+    Ok(news)
+}
+
 pub fn get_blocks(conn: &mut mysql::PooledConn) -> StdResult<Vec<BlockData>, MySQLError> {
     let blocks: Vec<BlockData> = conn.query_map(
-        "SELECT height FROM blocks",
-        |height| BlockData { height },
+        "SELECT hash, time, height, block_index, fee, n_tx FROM blocks",
+        |(hash, time, height, block_index, fee, n_tx )| BlockData { 
+            hash,
+            time,
+            height ,
+            block_index,
+            fee, 
+            n_tx
+        },
     )?;
     Ok(blocks)
 }

@@ -1,4 +1,5 @@
 //----block.service.ts
+//----block.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -21,6 +22,7 @@ interface NewsItem {
   tags: string;
 }
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,5 +38,6 @@ export class BlockService {
 
   getNews(): Observable<NewsItem[]> {
     return this.http.get<NewsItem[]>(this.apiUrl_news);
+
   }
 }

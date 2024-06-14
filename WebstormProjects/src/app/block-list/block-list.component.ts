@@ -7,7 +7,9 @@ import { BlockService } from '../block.service';
   templateUrl: './block-list.component.html',
   styleUrls: ['./block-list.component.css']
 })
+
 export class BlockListComponent implements OnInit {
+
   blocks: any[] = [];
   news: any[] =[];
   displayedColumns_block: string[] = ['height_block', 'fee_block', 'hash_block'];
