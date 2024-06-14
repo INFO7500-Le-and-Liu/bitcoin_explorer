@@ -16,10 +16,12 @@ use {
 
 fn main() {
 
+    let latest_block : LatestBlock = blocks_info::latest_blocks_request();
 
+    let mut height = latest_block.height - 10;
 
-    let mut height = 847855;
     let mut timer = 0;
+    sleep(Duration::from_secs(10));
     loop {
         // if one block take 10 mins, 144 blocks roughly take 1 day
         // 24 * 60 / 10 = 144
@@ -44,6 +46,7 @@ fn main() {
         }
         println!("request block: {} ...",height);
         let response : BlocksData = blocks_info::request_block_by_height(&height);
+        sleep(Duration::from_secs(10));
         println!("request latest block ...");
         let latest : LatestBlock = blocks_info::latest_blocks_request();
         
