@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-interface Record {
-  id?: number;
+interface Block {
+  hash: string;
+  time: string;
+  block_index: number;
   height: number;
-  name?: string;
+  fee: number;
+  n_tx: number;
 }
 
 @Component({
@@ -13,13 +16,14 @@ interface Record {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  records: Record[] = [];
+  title = 'blockchain-web';
+  blocks: Block[] = [];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<Record[]>('http://localhost:8080/blocks').subscribe(data => {
-      this.records = data;
+    this.http.get<Block[]>('http://localhost:8080/blocks').subscribe(data => {
+      this.blocks = data;
     });
   }
 }

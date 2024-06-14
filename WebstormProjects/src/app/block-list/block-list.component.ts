@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BlockService } from '../block.service';
+// import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-block-list',
@@ -7,13 +8,20 @@ import { BlockService } from '../block.service';
   styleUrls: ['./block-list.component.css']
 })
 export class BlockListComponent implements OnInit {
-  heights: any;
+  blocks: any[] = [];
+  news: any[] =[];
+  displayedColumns_block: string[] = ['height_block', 'fee_block', 'hash_block'];
+  displayedColumns_news: string[] = ['id_news', 'title_news']
 
   constructor(private dataService: BlockService) { }
 
   ngOnInit(): void {
-    this.dataService.getHeights().subscribe((response: any) => {
-      this.heights = response;
+    this.dataService.getBlocks().subscribe(data => {
+      this.blocks = data.slice(0,10);
+    });
+    this.dataService.getNews().subscribe(response => {
+      this.news = response.slice(0,10);
     });
   }
+
 }
