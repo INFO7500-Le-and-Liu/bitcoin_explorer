@@ -1,5 +1,5 @@
 use {
-    dotenv,
+    // dotenv,
     reqwest,
     tokio,
     crate::blocks_model::{BlocksData,LatestBlock},
@@ -18,7 +18,7 @@ pub async fn send_request(url: &str) -> String {
 
     client
         .get(url)
-        .header("api_key", dotenv::var("BLOCKCHAIN_API_KEY").expect("Cloud not find key: API_KEY"))
+        // .header("api_key", dotenv::var("BLOCKCHAIN_API_KEY").expect("Cloud not find key: API_KEY"))
         .send()
         .await
         .expect("Failed to get response")

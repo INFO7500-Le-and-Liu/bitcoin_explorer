@@ -1,8 +1,8 @@
 use {
-    dotenv,
-    reqwest,
-    tokio,
-    crate::news_model::NewsResponse
+    crate::news_model::NewsResponse, 
+    dotenv, 
+    reqwest, 
+    tokio
 };
 
 #[tokio::main]
@@ -22,8 +22,8 @@ pub async fn send_request(url: &str) -> String {
 }
 
 pub fn request_news() -> NewsResponse{
-    let url: &str = "https://min-api.cryptocompare.com/data/v2/news/?lang=EN";
-    let response: String = send_request(url);
+    let url =  dotenv::var("NEWS_URL").expect("Failed");
+    let response: String = send_request(&url);
     // println!("{}",response);
     serde_json::from_str(&response).expect("Failed to parse JSON for news")
 }

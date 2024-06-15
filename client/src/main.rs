@@ -4,12 +4,12 @@ extern crate serde_derive;
 mod blocks_model;
 mod blocks_info;
 mod news_info;
-mod init_database;
+mod database_op;
 mod news_model;
 
 
 use {
-    crate::blocks_model::BlocksData, blocks_model::LatestBlock, init_database::{init_database, insert_block_data,insert_news_data}, std::{thread::sleep, time::Duration}    
+    crate::blocks_model::BlocksData, blocks_model::LatestBlock, database_op::{init_database, insert_block_data,insert_news_data}, std::{thread::sleep, time::Duration}    
     // dotenv,
     // std::{io, thread, time},
 };
@@ -19,6 +19,7 @@ fn main() {
     let latest_block : LatestBlock = blocks_info::latest_blocks_request();
 
     let mut height = latest_block.height - 10;
+    println!("get latest ten blocks from {}", height);
 
     let mut timer = 0;
     sleep(Duration::from_secs(10));
@@ -44,7 +45,7 @@ fn main() {
                 }
             };
         }
-        println!("request block: {} ...",height);
+        // println!("request block: {} ...",height);
         let response : BlocksData = blocks_info::request_block_by_height(&height);
         sleep(Duration::from_secs(10));
         println!("request latest block ...");
