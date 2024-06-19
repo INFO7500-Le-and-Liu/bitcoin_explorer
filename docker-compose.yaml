@@ -44,6 +44,7 @@ services:
     container_name: frontend
     depends_on:
       - rust-api
+      - database
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     networks:

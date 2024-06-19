@@ -1,9 +1,6 @@
 extern crate mysql;
 use{ 
-    crate::model::{BlockData, NewsData}, 
-    dotenv, 
-    mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool}, 
-    std::result::Result as StdResult
+    crate::model::{BlockData, NewsData}, dotenv, mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool}, rocket::serde::json::Json, std::result::Result as StdResult
 };
 
 pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
@@ -14,6 +11,7 @@ pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
         .db_name(Some(dotenv::var("DB_DATABASE").expect("Failed to load database name")));
     // return a pool not a connection
     // rocket will handel the pool
+    println!("get the pools success"); // debug
     Ok(Pool::new(builder).expect("Failed to get Pool"))
 } 
 
@@ -32,6 +30,9 @@ pub fn get_news(conn: &mut mysql::PooledConn) -> StdResult<Vec<NewsData>, MySQLE
             tags
          },
     )?;
+
+    // println!("Fetched news: {:?}", news);
+
     Ok(news)
 }
 
@@ -50,5 +51,7 @@ pub fn get_blocks(conn: &mut mysql::PooledConn) -> StdResult<Vec<BlockData>, MyS
             n_tx
         },
     )?;
+
+    // println!("Fetched news: {:?}", blocks); // debug
     Ok(blocks)
 }

@@ -2,7 +2,6 @@
 
 use rocket::serde::json::Json;
 use rocket::figment::Figment;
-use rocket::http::Method;
 use rocket_cors::{CorsOptions, AllowedOrigins};
 
 // use rocket::figment::{Figment, providers::{Format, Toml, Env}};
@@ -15,10 +14,6 @@ use {
     db::{ get_blocks, get_mysql_connection, get_news},
     model::{BlockData, NewsData},
 };
-
-
-
-
 
 #[get("/blocks")]
 fn get_blocks_handler() -> Json<Vec<BlockData>> {
@@ -45,10 +40,12 @@ fn get_news_handler() -> Json<Vec<NewsData>> {
 #[launch]
 fn rocket() -> _ {
     let figment = Figment::from(rocket::Config::default())
+        .merge(("address", "0.0.0.0"))
         .merge(("port", 8080)); // Set port to 8080
 
     let allowed_origins = AllowedOrigins::some_exact(&[
-        "http://localhost:4200", // allow port
+        "http://frontend:4200", // allow port
+        "http://localhost:4200",
     ]);
     
     let cors = CorsOptions {
