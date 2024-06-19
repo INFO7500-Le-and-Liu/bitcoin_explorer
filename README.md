@@ -12,11 +12,14 @@ To configure the application properly, you must create a `.env` file containing 
 4. Add the following configurations to the file, substituting the placeholder values with your actual data:
 
    ```plaintext
-   # Blockchain API Configuration
-   API_KEY = ""
+#[blockchain api]
+BLOCKCHAIN_API_KEY = "" 
+CRYPTO_API_KEY = ""
 
-   # Database Configuration
-   DB_HOSTNAME = ""
-   DB_USERNAME = ""
-   DB_PASSWORD = ""
-   DB_DATABASE = ""
+#[database config]
+DB_HOSTNAME = ""
+DB_USERNAME = ""
+DB_PASSWORD = ""
+DB_DATABASE = ""
+DB_BLOCK_TABLE = ""
+DB_NEWS_TABLE = ""

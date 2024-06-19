@@ -16,10 +16,12 @@ use {
 
 fn main() {
 
+
     let latest_block : LatestBlock = blocks_info::latest_blocks_request();
 
     let mut height = latest_block.height - 10;
     println!("get latest ten blocks from {}", height);
+
 
     let mut timer = 0;
     sleep(Duration::from_secs(10));
