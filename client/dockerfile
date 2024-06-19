@@ -1,0 +1,12 @@
+FROM rust:latest
+
+WORKDIR /usr/src/app
+
+# copy the files
+COPY . .
+
+# build the project
+RUN cargo build --release
+
+# run the project
+CMD ["cargo", "run", "--release"]

@@ -1,0 +1,15 @@
+# use rust nightly image
+FROM rust:latest
+
+WORKDIR /usr/src/app
+
+# change to nightly to set CORS
+RUN rustup default nightly
+
+COPY . .
+
+# build the project to release
+RUN cargo build --release
+
+# set the command to run zhe project
+CMD ["cargo", "run", "release"]
