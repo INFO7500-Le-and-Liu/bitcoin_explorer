@@ -1,8 +1,9 @@
 #[macro_use] extern crate rocket;
 
 use rocket::serde::json::Json;
-
 use rocket::figment::Figment;
+use rocket::http::Method;
+use rocket_cors::{CorsOptions, AllowedOrigins};
 
 // use rocket::figment::{Figment, providers::{Format, Toml, Env}};
 // use mysql::Pool;
@@ -14,6 +15,10 @@ use {
     db::{ get_blocks, get_mysql_connection, get_news},
     model::{BlockData, NewsData},
 };
+
+
+
+
 
 #[get("/blocks")]
 fn get_blocks_handler() -> Json<Vec<BlockData>> {
@@ -42,6 +47,19 @@ fn rocket() -> _ {
     let figment = Figment::from(rocket::Config::default())
         .merge(("port", 8080)); // Set port to 8080
 
+    let allowed_origins = AllowedOrigins::some_exact(&[
+        "http://localhost:4200", // allow port
+    ]);
+    
+    let cors = CorsOptions {
+        allowed_origins,
+        allow_credentials: true,
+        ..Default::default()
+    }
+    .to_cors()
+    .expect("Failed to create CORS fairing");
+
     rocket::custom(figment)
-        .mount("/", routes![get_blocks_handler, get_news_handler])
+    .mount("/", routes![get_blocks_handler, get_news_handler])
+    .attach(cors) // add CORS config
 }

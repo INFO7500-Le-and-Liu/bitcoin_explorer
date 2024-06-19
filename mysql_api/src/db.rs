@@ -15,12 +15,14 @@ pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
     // return a pool not a connection
     // rocket will handel the pool
     Ok(Pool::new(builder).expect("Failed to get Pool"))
-
 } 
 
 pub fn get_news(conn: &mut mysql::PooledConn) -> StdResult<Vec<NewsData>, MySQLError> {
+    let table_name = dotenv::var("DB_NEWS_TABLE").expect("Failed to load table name");
+    let query = format!("SELECT id, title, url, body, source, tags FROM {} ORDER BY id DESC",table_name);
+    
     let news: Vec<NewsData> = conn.query_map(
-        "SELECT id, title, url, body, source, tags FROM news ORDER BY DESC",
+        query,
         |(id, title, url, body, source, tags)| NewsData { 
             id, 
             title, 
@@ -34,8 +36,11 @@ pub fn get_news(conn: &mut mysql::PooledConn) -> StdResult<Vec<NewsData>, MySQLE
 }
 
 pub fn get_blocks(conn: &mut mysql::PooledConn) -> StdResult<Vec<BlockData>, MySQLError> {
+    let table_name = dotenv::var("DB_BLOCK_TABLE").expect("Failed to load table name");
+    let query = format!("SELECT hash, time, height, block_index, fee, n_tx FROM {} ORDER BY height DESC",table_name);
+
     let blocks: Vec<BlockData> = conn.query_map(
-        "SELECT hash, time, height, block_index, fee, n_tx FROM blocks",
+        query,
         |(hash, time, height, block_index, fee, n_tx )| BlockData { 
             hash,
             time,

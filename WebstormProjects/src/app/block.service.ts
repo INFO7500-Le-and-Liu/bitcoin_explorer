@@ -3,25 +3,41 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Record } from './record.model';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+
+interface Block {
+  hash: string;
+  time: string;
+  block_index: number;
+  height: number;
+  fee: number;
+  n_tx: number;
+}
+interface NewsItem {
+  id: string;
+  title: string;
+  url: string;
+  body: string;
+  source: string;
+  tags: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlockService {
   private apiUrl = 'http://localhost:8080/blocks';
+  private apiUrl_news = 'http://localhost:8080/news';
 
   constructor(private http: HttpClient) { }
 
-  // getHeights(): Observable<number[]> {
-  // getHeights(): Observable<number[]> {
-  //   return this.http.get<any[]>(this.apiUrl).pipe(
-  //     map(data => data.map(item => item.height))
-  //     map(data => data.map(item => item.height))
-  //   );
-  // }
-  getHeights(): Observable<Record[]> {
-    return this.http.get<Record[]>(this.apiUrl);
+  getBlocks(): Observable<Block[]> {
+    return this.http.get<Block[]>(this.apiUrl);
+  }
+
+  getNews(): Observable<NewsItem[]> {
+    return this.http.get<NewsItem[]>(this.apiUrl_news);
+
   }
 }
