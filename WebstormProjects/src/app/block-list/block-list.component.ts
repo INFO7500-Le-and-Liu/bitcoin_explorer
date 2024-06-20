@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BlockService } from '../block.service';
 import { Subscription } from 'rxjs';
 import { ChartType, ChartOptions, ChartDataSets} from 'chart.js';
-// import { Label } from 'ng2-charts';
+import { Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-block-list',
@@ -42,20 +42,16 @@ export class BlockListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.dataService.getBlocks().subscribe(blocks => {
-      this.blocks = blocks;
-      const fees = blocks.map(block => block.fee);
-      this.barChartLabels = blocks.map(block => block.height.toString());
+      this.blocks = blocks.sort((a, b) => a.height - b.height);
+
+      const fees = this.blocks.map(block => block.fee);
+      const n_tx = this.blocks.map(block => block.n_tx);
+      this.barChartLabels = this.blocks.map(block => block.height.toString());
       this.barChartData[0].data = fees;
+      this.barChartData2[0].data = n_tx;
     });
 
     this.startPolling();
-    this.dataService.getBlocks().subscribe(data => {
-      this.blocks = data.slice(0,10);
-    });
-    this.dataService.getNews().subscribe(response => {
-      this.news = response.slice(0,10);
-    });
-
   }
 
   startPolling(): void {

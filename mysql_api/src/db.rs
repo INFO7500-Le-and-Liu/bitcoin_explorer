@@ -49,6 +49,8 @@ pub fn get_blocks(conn: &mut mysql::PooledConn) -> StdResult<Vec<BlockData>, MyS
             fee, 
             n_tx
         },
+        
     )?;
+    println!("Fetched news: {:?}", blocks);
     Ok(blocks)
 }

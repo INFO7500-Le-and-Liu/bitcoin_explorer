@@ -1,48 +1,3 @@
-/*.block-list-container {*/
-/*  display: flex;*/
-/*  justify-content: center;*/
-/*  margin: 20px;*/
-/*}*/
-
-/*.mat-card {*/
-/*  width: 80%;*/
-/*}*/
-
-/*table {*/
-/*  width: 100%;*/
-/*}*/
-
-/*th.mat-header-cell {*/
-/*  background-color: #3f51b5;*/
-/*  color: white;*/
-/*}*/
-
-/*td.mat-cell {*/
-/*  text-align: center;*/
-/*}*/
-
-/*.news-list-container {*/
-/*  display: flex;*/
-/*  justify-content: center;*/
-/*  margin: 20px;*/
-/*}*/
-
-/*.mat-card {*/
-/*  width: 80%;*/
-/*}*/
-
-/*table {*/
-/*  width: 100%;*/
-/*}*/
-
-/*th.mat-header-cell {*/
-/*  background-color: #d22020;*/
-/*  color: white;*/
-/*}*/
-
-/*td.mat-cell {*/
-/*  text-align: center;*/
-/*}*/
 .block-list-container {
   display: flex;
   justify-content: center;
@@ -57,13 +12,14 @@
   width: 100%;
 }
 
+.block-list-container th.mat-header-cell, .block-list-container td.mat-cell {
+  text-align: center;
+  vertical-align: middle; /* Ensures the content is vertically centered */
+}
+
 .block-list-container th.mat-header-cell {
   background-color: #3f51b5;
   color: white;
-}
-
-.block-list-container td.mat-cell {
-  text-align: center;
 }
 
 .news-list-container {
@@ -80,13 +36,14 @@
   width: 100%;
 }
 
+.news-list-container th.mat-header-cell, .news-list-container td.mat-cell {
+  text-align: center;
+  vertical-align: middle; /* Ensures the content is vertically centered */
+}
+
 .news-list-container th.mat-header-cell {
   background-color: #d22020;
   color: white;
-}
-
-.news-list-container td.mat-cell {
-  text-align: center;
 }
 
 .charts-container {
