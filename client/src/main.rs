@@ -19,7 +19,7 @@ fn main() {
 
     let latest_block : LatestBlock = blocks_info::latest_blocks_request();
 
-    let mut height = latest_block.height - 10;
+    let mut height = latest_block.height - 30;
     println!("get latest ten blocks from {}", height);
 
 
@@ -77,7 +77,6 @@ fn main() {
         timer += 1;
         println!("---------next round----------");//debug
         sleep(Duration::from_secs(10));
-       
     }
 }
 

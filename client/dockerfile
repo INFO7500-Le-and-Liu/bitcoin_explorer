@@ -9,4 +9,5 @@ COPY . .
 RUN cargo build --release
 
 # run the project
+# CMD ["./target/release/client"]
 CMD ["cargo", "run", "--release"]
