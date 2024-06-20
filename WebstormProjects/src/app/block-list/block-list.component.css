@@ -1,48 +1,3 @@
-/*.block-list-container {*/
-/*  display: flex;*/
-/*  justify-content: center;*/
-/*  margin: 20px;*/
-/*}*/
-
-/*.mat-card {*/
-/*  width: 80%;*/
-/*}*/
-
-/*table {*/
-/*  width: 100%;*/
-/*}*/
-
-/*th.mat-header-cell {*/
-/*  background-color: #3f51b5;*/
-/*  color: white;*/
-/*}*/
-
-/*td.mat-cell {*/
-/*  text-align: center;*/
-/*}*/
-
-/*.news-list-container {*/
-/*  display: flex;*/
-/*  justify-content: center;*/
-/*  margin: 20px;*/
-/*}*/
-
-/*.mat-card {*/
-/*  width: 80%;*/
-/*}*/
-
-/*table {*/
-/*  width: 100%;*/
-/*}*/
-
-/*th.mat-header-cell {*/
-/*  background-color: #d22020;*/
-/*  color: white;*/
-/*}*/
-
-/*td.mat-cell {*/
-/*  text-align: center;*/
-/*}*/
 .block-list-container {
   display: flex;
   justify-content: center;
@@ -57,13 +12,14 @@
   width: 100%;
 }
 
+.block-list-container th.mat-header-cell, .block-list-container td.mat-cell {
+  text-align: center;
+  vertical-align: middle; /* Ensures the content is vertically centered */
+}
+
 .block-list-container th.mat-header-cell {
   background-color: #3f51b5;
   color: white;
-}
-
-.block-list-container td.mat-cell {
-  text-align: center;
 }
 
 .news-list-container {
@@ -80,11 +36,41 @@
   width: 100%;
 }
 
+.news-list-container th.mat-header-cell, .news-list-container td.mat-cell {
+  text-align: center;
+  vertical-align: middle; /* Ensures the content is vertically centered */
+}
+
 .news-list-container th.mat-header-cell {
   background-color: #d22020;
   color: white;
 }
 
-.news-list-container td.mat-cell {
-  text-align: center;
+.charts-container {
+  display: flex;
+  justify-content: space-around; /* Ensures there is space around the charts */
+  align-items: flex-start;       /* Aligns items to the start of the container */
+  flex-wrap: wrap;               /* Allows the charts to wrap on smaller screens */
+  margin: 20px;                  /* Adds some space around the container */
+}
+
+.chart {
+  flex: 1 1 45%; /* Takes up 45% of the container's width with some flexibility */
+  margin: 10px;  /* Adds space around each chart */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow to each chart */
+  padding: 20px; /* Adds padding inside the chart container */
+  background-color: #fff; /* Sets a white background for the chart container */
+  border-radius: 8px; /* Rounds the corners of the chart container */
+}
+
+h2 {
+  text-align: center; /* Centers the heading text */
+  font-family: 'Arial', sans-serif; /* Sets the font family for the heading */
+  font-size: 1.5em; /* Sets the font size for the heading */
+  margin-bottom: 10px; /* Adds space below the heading */
+}
+
+canvas {
+  width: 100% !important; /* Ensures the canvas takes the full width of its container */
+  height: auto !important; /* Maintains the aspect ratio of the canvas */
 }
