@@ -9,6 +9,7 @@ import { BlockService } from "./block.service";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from "@angular/material/table";
 import { MatCardModule } from "@angular/material/card";
+import { ChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MatCardModule } from "@angular/material/card";
     HttpClientModule,
     BrowserAnimationsModule,
     MatTableModule,
-    MatCardModule
+    MatCardModule,
+    ChartsModule
   ],
   providers: [BlockService],
   bootstrap: [AppComponent]
