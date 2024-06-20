@@ -56,6 +56,27 @@ pub fn create_database_and_table(conn: &mut PooledConn) -> StdResult<(), MySQLEr
     Ok(())
 }
 
+// init the database
+pub fn init_database() -> StdResult<PooledConn, MySQLError> {
+    let mut conn = match get_mysql_connection() {
+        Ok(conn) => {
+            println!("Successfully connected to the database!");
+            conn
+        }
+        Err(e) => {
+            eprintln!("Failed to connect to the database: {:?}", e);
+            return Err(e);
+        }
+    };
+
+    if let Err(e) = create_database_and_table(&mut conn) {
+        eprintln!("Error creating database or table: {:?}", e);
+        return Err(e);
+    }
+    Ok(conn)
+}
+
+
 pub fn insert_block_data(conn: &mut PooledConn, block: &BlocksData) -> StdResult<(), MySQLError> {
     dotenv().ok();
     let table_name = dotenv::var("DB_BLOCK_TABLE").expect("Failed to load table name");
@@ -98,26 +119,7 @@ pub fn insert_news_data(conn: &mut PooledConn, news: &NewsData) -> StdResult<(),
             "tags" => &news.tags,
         },
     )?;
-    println!("Insert Done");
+    println!("News Insert Done");
     Ok(())
 }
 
-// init the database
-pub fn init_database() -> StdResult<PooledConn, MySQLError> {
-    let mut conn = match get_mysql_connection() {
-        Ok(conn) => {
-            println!("Successfully connected to the database!");
-            conn
-        }
-        Err(e) => {
-            eprintln!("Failed to connect to the database: {:?}", e);
-            return Err(e);
-        }
-    };
-
-    if let Err(e) = create_database_and_table(&mut conn) {
-        eprintln!("Error creating database or table: {:?}", e);
-        return Err(e);
-    }
-    Ok(conn)
-}
