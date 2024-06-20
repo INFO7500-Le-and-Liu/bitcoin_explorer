@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { BlockService } from './block.service';
+import { Subscription } from 'rxjs';
 
 interface Block {
   hash: string;
