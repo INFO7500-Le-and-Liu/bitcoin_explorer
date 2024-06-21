@@ -23,7 +23,7 @@ jobs:
 
       - name: Build and push Docker image client 1
         run: |
-          docker buildx build --platform linux/amd64 -t registry.heroku.com/bitcoinexplore/worker -f Dockerfile ./client --push
+          docker buildx build --platform linux/amd64 -t registry.heroku.com/bitcoinexplore/worker -f client/Dockerfile ./client --push
 
       - name: Release the Docker image client 1
         env:
