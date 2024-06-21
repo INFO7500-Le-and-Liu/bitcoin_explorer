@@ -22,7 +22,4 @@ jobs:
           heroku_app_name: "bitcoinexplore" #Must be unique in Heroku
           heroku_email: "${{secrets.HEROKU_EMAIL_LDY}}"
           usedocker: true
-        #   docker_build_args: |
-        #     SECRET_KEY
-        # env:
-        #   SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
+        working-directory: ./client
