@@ -1,45 +1,51 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
-    branches:
-      - Leonle30
+    branches: Leonle30
   pull_request:
-    branches:
-      - Leonle30
+    branches: Leonle30
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x]
-
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      # Frontend steps
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '16'
 
-      - name: Install frontend dependencies
-        working-directory: ./WebstormProjects
+      - name: Install dependencies
         run: npm install
 
-      - name: Build Angular project
-        working-directory: ./WebstormProjects
-        run: npm run build --prod
+      - name: Build the application
+        run: npm run build
 
-      - name: Run frontend tests
+      - name: Start the application
+        run: npm start &
+        
+      - name: Wait for the application to be available
+        run: npx wait-on http://localhost:9876
+
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
           working-directory: ./WebstormProjects
-          start: npm test
+          start: npm start
           wait-on: http://localhost:9876
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v2
+        with:
+          build: npm test
+
+
+
+        
 
       # Backend steps for client
       - name: Install Rust for client
