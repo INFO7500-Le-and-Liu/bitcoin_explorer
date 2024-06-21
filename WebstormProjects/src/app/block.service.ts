@@ -27,8 +27,8 @@ interface NewsItem {
   providedIn: 'root'
 })
 export class BlockService {
-  private apiUrl = 'http://localhost:8080/blocks';
-  private apiUrl_news = 'http://localhost:8080/news';
+  private apiUrl = 'http://0.0.0.0:8080/blocks';
+  private apiUrl_news = 'http://0.0.0.0:8080/news';
 
   constructor(private http: HttpClient) { }
 

@@ -1,0 +1,58 @@
+services:
+  database:
+    image: mysql:8.0
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # MYSQL_USER: ${MYSQL_USER}
+      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306" # external port 3307, internal port 3306
+    networks:
+    - app-network
+
+  rust-fetch-data:
+    build:
+      context: ./client
+    container_name: rust-client
+    depends_on:
+      - database
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  rust-api:
+    build:
+      context: ./mysql_api
+    container_name: rust-api
+    depends_on:
+      - database
+    ports:
+      - "${RUST_API_PORT}:${RUST_API_PORT}"
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./WebstormProjects
+    container_name: frontend
+    depends_on:
+      - rust-api
+      - database
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
