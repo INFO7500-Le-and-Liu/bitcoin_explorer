@@ -27,10 +27,10 @@ jobs:
         run: npm run build
         working-directory: ./WebstormProjects
 
-      - name: Check if port 9876 is in use
+      - name: Check if port 8080 is in use
         run: |
-          if lsof -Pi :9876 -sTCP:LISTEN -t >/dev/null ; then
-            echo "Port 9876 is in use"
+          if lsof -Pi :8080 -sTCP:LISTEN -t >/dev/null ; then
+            echo "Port 8080 is in use"
             # 停止占用端口的进程，假设进程号为 $PID
             kill $PID
           else
@@ -48,12 +48,12 @@ jobs:
         run: sleep 120
 
       - name: Check application status
-        run: curl http://localhost:9876  # Assuming your application runs on port 9876
+        run: curl http://localhost:8080  # Assuming your application runs on port 9876
         
 
       - name: Wait for the application to be available
         run: |
-          npx wait-on http://localhost:9876 --timeout 600000
+          npx wait-on http://localhost:8080 --timeout 600000
           if [ $? -ne 0 ]; then
             echo "The application did not start in time. Here is the log:"
             cat ./WebstormProjects/app.log
@@ -65,7 +65,7 @@ jobs:
         with:
           working-directory: ./WebstormProjects
           start: npm test
-          wait-on: http://localhost:9876
+          wait-on: http://localhost:8080
 
   deploy:
     runs-on: ubuntu-latest
