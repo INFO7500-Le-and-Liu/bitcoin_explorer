@@ -1,0 +1,99 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - Leonle30
+  pull_request:
+    branches:
+      - Leonle30
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Frontend steps
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install frontend dependencies
+        working-directory: ./WebstormProjects
+        run: npm install
+
+      - name: Build Angular project
+        working-directory: ./WebstormProjects
+        run: npm run build --prod
+
+      - name: Run frontend tests
+        working-directory: ./WebstormProjects
+        run: npm test
+
+      # Backend steps for client
+      - name: Install Rust for client
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Build Rust client project
+        working-directory: ./client
+        run: cargo build --release
+
+      - name: Run client tests
+        working-directory: ./client
+        run: cargo test
+
+      # Backend steps for mysql_api
+      - name: Install Rust for mysql_api
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Build Rust mysql_api project
+        working-directory: ./mysql_api
+        run: cargo build --release
+
+      - name: Run mysql_api tests
+        working-directory: ./mysql_api
+        run: cargo test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy frontend to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./WebstormProjects/dist/WebstormProjects # 这里替换为你的 Angular 项目名称
+
+      - name: Deploy client backend to Heroku
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku login -i
+          git push heroku main
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }} # 这里配置 Heroku API 密钥
+
+      - name: Deploy mysql_api backend to Heroku
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku login -i
+          git push heroku main
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }} # 这里配置 Heroku API 密钥
