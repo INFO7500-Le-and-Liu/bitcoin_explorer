@@ -23,7 +23,7 @@ jobs:
 
       - name: Build and push Docker image client 1
         working-directory: ./client
-        run: docker push registry.heroku.com/bitcoinexplore/worker
+        run:  heroku container:push worker -a bitcoinexplore
 
       - name: Release the Docker image client 1
         working-directory: ./client
