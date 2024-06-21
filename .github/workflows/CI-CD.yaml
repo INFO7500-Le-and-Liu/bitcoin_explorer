@@ -22,10 +22,11 @@ jobs:
         run: echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
 
       - name: Build and push Docker image client 1
-        run: |
-          docker buildx build --platform linux/amd64 -t registry.heroku.com/bitcoinexplore/worker -f client/Dockerfile ./client --push
+        working-directory: ./client
+        run: docker push registry.heroku.com/bitcoinexplore/worker
 
       - name: Release the Docker image client 1
+        working-directory: ./client
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
         run: |
