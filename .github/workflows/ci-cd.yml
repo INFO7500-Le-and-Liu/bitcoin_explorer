@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: Leonle30
+    branches: [Leonle30]
   pull_request:
-    branches: Leonle30
+    branches: [Leonle30]
 
 jobs:
   build-and-test:
@@ -21,12 +21,15 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./WebstormProjects
 
       - name: Build the application
         run: npm run build
+        working-directory: ./WebstormProjects
 
       - name: Start the application
         run: npm start &
+        working-directory: ./WebstormProjects
         
       - name: Wait for the application to be available
         run: npx wait-on http://localhost:9876
@@ -53,9 +56,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./WebstormProjects
 
       - name: Build the application
         run: npm run build
+        working-directory: ./WebstormProjects
 
       - name: Deploy to server
         run: |
