@@ -3,7 +3,8 @@ use{
     crate::model::{BlockData, NewsData},  
     mysql::{prelude::*, Error as MySQLError, OptsBuilder, Pool},  
     std::result::Result as StdResult,
-    std::env
+    std::env,
+    dotenv::dotenv
 };
 
 pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
@@ -17,6 +18,9 @@ pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
     // // rocket will handel the pool
     // println!("get the pools success"); // debug
     // Ok(Pool::new(builder).expect("Failed to get Pool"))
+
+    #[cfg(debug_assertions)]    
+    dotenv().ok();
 
     // CI/CD 
     let hostname = env::var("DB_HOSTNAME").unwrap_or_else(|_| "default_host".to_string());

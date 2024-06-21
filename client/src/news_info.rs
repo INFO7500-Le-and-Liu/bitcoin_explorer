@@ -2,12 +2,15 @@ use {
     crate::news_model::NewsResponse, 
     std::env, 
     reqwest, 
-    tokio
+    tokio,
+    dotenv::dotenv
 };
 
 #[tokio::main]
 pub async fn send_request(url: &str) -> String {
     // request function
+    #[cfg(debug_assertions)]   
+    dotenv().ok();
     let client = reqwest::Client::new();
 
     client

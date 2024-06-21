@@ -19,10 +19,13 @@ pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
     // let pool = Pool::new(builder)?;
     // let conn = pool.get_conn()?;
     // Ok(conn)
-
+    #[cfg(debug_assertions)]    
+    dotenv().ok();
     let hostname = env::var("DB_HOSTNAME").unwrap_or_else(|_| "default_host".to_string());
     let username = env::var("DB_USERNAME").unwrap_or_else(|_| "default_user".to_string());
     let password = env::var("DB_PASSWORD").unwrap_or_else(|_| "default_password".to_string());
+
+    println!("{} {} {}", hostname, username, password);
 
     let builder = OptsBuilder::new()
         .ip_or_hostname(Some(hostname))

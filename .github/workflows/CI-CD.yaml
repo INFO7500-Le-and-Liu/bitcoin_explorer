@@ -23,3 +23,25 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
           SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
+
+      - name: Deploy mysql-api to Heroku
+        run: |
+          cd mysql_api
+          docker build -t registry.heroku.com/bitcoinexploreapi/web .
+          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+          docker push registry.heroku.com/bitcoinexploreapi/web
+          heroku container:release worker -a bitcoinexploreapi
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+          SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
+
+      - name: Deploy frontend to Heroku
+        run: |
+          cd WebstormProjects
+          docker build -t registry.heroku.com/bitcoinexplorefront/web .
+          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+          docker push registry.heroku.com/bitcoinexplorefront/web
+          heroku container:release worker -a bitcoinexplorefront
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+          SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
