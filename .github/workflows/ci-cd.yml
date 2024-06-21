@@ -28,11 +28,14 @@ jobs:
         working-directory: ./WebstormProjects
 
       - name: Start the application
-        run: npm start &
+        run: npm start > app.log 2>&1 &
         working-directory: ./WebstormProjects
-        
+
+      - name: Display application log
+        run: cat ./WebstormProjects/app.log
+
       - name: Wait for the application to be available
-        run: npx wait-on http://localhost:9876
+        run: npx wait-on http://localhost:9876 --timeout 120000
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
