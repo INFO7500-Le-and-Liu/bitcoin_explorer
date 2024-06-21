@@ -40,7 +40,7 @@ fn get_news_handler() -> Json<Vec<NewsData>> {
 #[launch]
 fn rocket() -> _ {
     let figment = Figment::from(rocket::Config::default())
-        .merge(("address", "0.0.0.0"))
+        // .merge(("address", "0.0.0.0"))
         .merge(("port", 8080)); // Set port to 8080
 
     let allowed_origins = AllowedOrigins::some_exact(&[
