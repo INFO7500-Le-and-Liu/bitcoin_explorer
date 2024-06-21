@@ -1,24 +1,31 @@
-# stage 1
+# stage 1: Build stage
 FROM rust:latest AS builder
 
 WORKDIR /usr/src/app
 
-# copy the files
+# Copy Cargo.toml and Cargo.lock to the container
 COPY Cargo.toml Cargo.lock ./
 
+# Create a dummy src directory and run a dummy build to cache dependencies
 RUN mkdir src
-COPY src ./src
+RUN echo "fn main() {}" > src/main.rs
+RUN cargo build --release
+RUN rm -rf src
 
-# build the project
+# Copy the source code and build the project
+COPY src ./src
 RUN cargo build --release
 
-# stage 2
-FROM debian:buster-slim
+# stage 2: Runtime stage with full Rust environment for debugging
+FROM rust:latest
 
 WORKDIR /usr/src/app
 
-# copy the exe file
+# Copy the executable and source code from the build stage
 COPY --from=builder /usr/src/app/target/release/client .
+COPY --from=builder /usr/src/app/src ./src
+COPY --from=builder /usr/src/app/Cargo.toml .
+COPY --from=builder /usr/src/app/Cargo.lock .
 
-# run the file
+# Run the executable
 CMD ["./client"]
