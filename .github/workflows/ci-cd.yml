@@ -28,20 +28,26 @@ jobs:
         working-directory: ./WebstormProjects
 
       - name: Start the application
-        run: npm start > app.log 2>&1 &
+        run: |
+          nohup npm start > app.log 2>&1 &
+          sleep 10 # 等待应用程序启动
+          cat app.log # 显示应用程序日志以进行调试
         working-directory: ./WebstormProjects
 
-      - name: Display application log
-        run: cat ./WebstormProjects/app.log
-
       - name: Wait for the application to be available
-        run: npx wait-on http://localhost:9876 --timeout 120000
+        run: |
+          npx wait-on http://localhost:9876 --timeout 120000
+          if [ $? -ne 0 ]; then
+            echo "The application did not start in time. Here is the log:"
+            cat ./WebstormProjects/app.log
+            exit 1
+          fi
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
           working-directory: ./WebstormProjects
-          start: npm start
+          start: npm test
           wait-on: http://localhost:9876
 
   deploy:
@@ -67,5 +73,5 @@ jobs:
 
       - name: Deploy to server
         run: |
-          # Add your deployment commands here
+          # 添加你的部署命令
           echo "Deploying application..."
