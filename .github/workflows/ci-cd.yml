@@ -27,12 +27,29 @@ jobs:
         run: npm run build
         working-directory: ./WebstormProjects
 
+      - name: Check if port 9876 is in use
+        run: |
+          if lsof -Pi :9876 -sTCP:LISTEN -t >/dev/null ; then
+            echo "Port 9876 is in use"
+            # 停止占用端口的进程，假设进程号为 $PID
+            kill $PID
+          else
+            echo "Port 9876 is free"
+          fi
+
       - name: Start the application
         run: |
           nohup npm start > app.log 2>&1 &
           sleep 10 # 等待应用程序启动
           cat app.log # 显示应用程序日志以进行调试
         working-directory: ./WebstormProjects
+
+      - name: Wait for application to start
+        run: sleep 120
+
+      - name: Check application status
+        run: curl http://localhost:9876  # Assuming your application runs on port 9876
+        
 
       - name: Wait for the application to be available
         run: |
