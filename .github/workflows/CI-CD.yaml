@@ -16,10 +16,10 @@ jobs:
       - name: Deploy client to Heroku
         run: |
           cd client
-          docker build -t registry.heroku.com/bitcoinexplore/web .
+          docker build -t registry.heroku.com/bitcoinexplore/worker .
           echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
-          docker push registry.heroku.com/bitcoinexplore/web
-          heroku container:release web -a bitcoinexplore
+          docker push registry.heroku.com/bitcoinexplore/worker
+          heroku container:release worker -a bitcoinexplore
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
           SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
