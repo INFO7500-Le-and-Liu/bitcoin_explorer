@@ -1,13 +1,24 @@
-FROM rust:latest
+# stage 1
+FROM rust:latest AS builder
 
 WORKDIR /usr/src/app
 
 # copy the files
-COPY . .
+COPY Cargo.toml Cargo.lock ./
+
+RUN mkdir src
+COPY src ./src
 
 # build the project
 RUN cargo build --release
 
-# run the project
-# CMD ["./target/release/client"]
-CMD ["cargo", "run", "--release"]
+# stage 2
+FROM debian:buster-slim
+
+WORKDIR /usr/src/app
+
+# copy the exe file
+COPY --from=builder /usr/src/app/target/release/client .
+
+# run the file
+CMD ["./client"]

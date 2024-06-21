@@ -1,6 +1,6 @@
 use {
     crate::news_model::NewsResponse, 
-    dotenv, 
+    std::env, 
     reqwest, 
     tokio
 };
@@ -12,7 +12,7 @@ pub async fn send_request(url: &str) -> String {
 
     client
         .get(url)
-        .header("api_key", dotenv::var("CRYPTO_API_KEY").expect("Cloud not find key: API_KEY"))
+        .header("api_key", env::var("CRYPTO_API_KEY").unwrap_or_else(|_| " ".to_string()) )
         .send()
         .await
         .expect("Failed to get response")
@@ -22,7 +22,7 @@ pub async fn send_request(url: &str) -> String {
 }
 
 pub fn request_news() -> NewsResponse{
-    let url =  dotenv::var("NEWS_URL").expect("Failed");
+    let url =  "https://min-api.cryptocompare.com/data/v2/news/?lang=EN";
     let response: String = send_request(&url);
     // println!("{}",response);
     serde_json::from_str(&response).expect("Failed to parse JSON for news")

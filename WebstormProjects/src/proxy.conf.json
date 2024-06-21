@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://0.0.0.0:8080\blocks",
+    "target": "http://0.0.0.0:8080/blocks",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",
