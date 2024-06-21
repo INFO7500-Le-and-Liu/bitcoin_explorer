@@ -35,8 +35,11 @@ jobs:
         run: npm run build --prod
 
       - name: Run frontend tests
-        working-directory: ./WebstormProjects
-        run: npm test
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: ./WebstormProjects
+          start: npm test
+          wait-on: http://localhost:9876
 
       # Backend steps for client
       - name: Install Rust for client
