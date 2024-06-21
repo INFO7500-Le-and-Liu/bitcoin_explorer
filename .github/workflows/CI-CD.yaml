@@ -13,20 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Log in to Heroku Container Registry
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
-        run: echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
-
-      - name: Build and push Docker image client 1
-        working-directory: ./client
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
-        run: heroku container:push worker -a bitcoinexplore
-
-      - name: Release the Docker image client 1
-        working-directory: ./client
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+      - name: Deploy client to Heroku
         run: |
-          heroku container:release worker -a bitcoinexplore
+          cd client
+          docker build -t registry.heroku.com/bitcoinexplore/web .
+          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+          docker push registry.heroku.com/bitcoinexplore/web
+          heroku container:release web -a bitcoinexplore
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+          SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
