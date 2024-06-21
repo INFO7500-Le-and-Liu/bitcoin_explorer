@@ -36,7 +36,7 @@ jobs:
 
       - name: Wait for the application to be available
         run: |
-          npx wait-on http://localhost:9876 --timeout 120000
+          npx wait-on http://localhost:9876 --timeout 600000
           if [ $? -ne 0 ]; then
             echo "The application did not start in time. Here is the log:"
             cat ./WebstormProjects/app.log
