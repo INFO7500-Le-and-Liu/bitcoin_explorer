@@ -12,5 +12,5 @@ COPY . .
 RUN cargo build --release
 
 # set the command to run zhe project
-CMD ["./target/release/mysql_api"]
-# CMD ["cargo", "run", "--release"]
+# CMD ["./target/release/mysql_api"]
+CMD ["cargo", "run", "--release"]

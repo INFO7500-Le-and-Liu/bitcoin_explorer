@@ -27,8 +27,8 @@ interface NewsItem {
   providedIn: 'root'
 })
 export class BlockService {
-  private apiUrl = 'http://0.0.0.0:8080/blocks';
-  private apiUrl_news = 'http://0.0.0.0:8080/news';
+  private apiUrl = 'https://bitcoinexploreapi-8736fa1382e0.herokuapp.com/blocks';
+  private apiUrl_news = 'https://bitcoinexploreapi-8736fa1382e0.herokuapp.com/news';
 
   constructor(private http: HttpClient) { }
 
