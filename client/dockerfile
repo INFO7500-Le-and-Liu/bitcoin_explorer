@@ -1,31 +1,12 @@
-# stage 1: Build stage
-FROM rust:latest AS builder
-
-WORKDIR /usr/src/app
-
-# Copy Cargo.toml and Cargo.lock to the container
-COPY Cargo.toml Cargo.lock ./
-
-# Create a dummy src directory and run a dummy build to cache dependencies
-RUN mkdir src
-RUN echo "fn main() {}" > src/main.rs
-RUN cargo build --release
-RUN rm -rf src
-
-# Copy the source code and build the project
-COPY src ./src
-RUN cargo build --release
-
-# stage 2: Runtime stage with full Rust environment for debugging
 FROM rust:latest
 
 WORKDIR /usr/src/app
 
-# Copy the executable and source code from the build stage
-COPY --from=builder /usr/src/app/target/release/client .
-COPY --from=builder /usr/src/app/src ./src
-COPY --from=builder /usr/src/app/Cargo.toml .
-COPY --from=builder /usr/src/app/Cargo.lock .
+# copy the files
+COPY . .
 
-# Run the executable
-CMD ["./client"]
+# build the project
+RUN cargo build --release
+
+# run the project
+CMD ["cargo", "run", "--release"]

@@ -26,10 +26,10 @@ jobs:
       - name: Deploy mysql-api to Heroku
         run: |
           cd mysql_api
-          docker build -t registry.heroku.com/bitcoinexploreapi/web .
+          docker build -t registry.heroku.com/bitcoinexploreapi/mysql-api .
           echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
-          docker push registry.heroku.com/bitcoinexploreapi/web
-          heroku container:release web -a bitcoinexploreapi
+          docker push registry.heroku.com/bitcoinexploreapi/mysql-api
+          heroku container:release mysql-api -a bitcoinexploreapi
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
 
