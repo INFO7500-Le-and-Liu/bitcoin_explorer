@@ -39,6 +39,7 @@ jobs:
 
       - name: Start the application
         run: |
+          export NODE_OPTIONS=--openssl-legacy-provider
           nohup npm start > app.log 2>&1 &
           sleep 10 # 等待应用程序启动
           cat app.log # 显示应用程序日志以进行调试
