@@ -27,46 +27,78 @@ jobs:
         run: npm run build
         working-directory: ./WebstormProjects
 
-      - name: Check if port 8080 is in use
+      - name: Install Playwright Browsers
         run: |
-          if lsof -Pi :8080 -sTCP:LISTEN -t >/dev/null ; then
-            echo "Port 8080 is in use"
-            # 停止占用端口的进程，假设进程号为 $PID
-            kill $PID
-          else
-            echo "Port 9876 is free"
-          fi
+          cd frontend
+          npx playwright install --with-deps
 
-      - name: Start the application
+      # - name: Check if port 8080 is in use
+      #   run: |
+      #     if lsof -Pi :8080 -sTCP:LISTEN -t >/dev/null ; then
+      #       echo "Port 8080 is in use"
+      #       # 停止占用端口的进程，假设进程号为 $PID
+      #       kill $PID
+      #     else
+      #       echo "Port 9876 is free"
+      #     fi
+
+      # - name: Start the application
+      #   run: |
+      #     export NODE_OPTIONS=--openssl-legacy-provider
+      #     nohup npm start > app.log 2>&1 &
+      #     sleep 10 # 等待应用程序启动
+      #     cat app.log # 显示应用程序日志以进行调试
+      #   working-directory: ./WebstormProjects
+
+      # - name: Wait for application to start
+      #   run: sleep 120
+
+      
+      - name: Run Playwright Tests
         run: |
-          export NODE_OPTIONS=--openssl-legacy-provider
-          nohup npm start > app.log 2>&1 &
-          sleep 10 # 等待应用程序启动
-          cat app.log # 显示应用程序日志以进行调试
-        working-directory: ./WebstormProjects
+          cd frontend
+          npx start-server-and-test 'npm start' http://localhost:3000 'npx playwright test'
 
-      - name: Wait for application to start
-        run: sleep 120
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 30
 
-      - name: Check application status
-        run: curl http://localhost:8080  # Assuming your application runs on port 9876
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          components: rustfmt, clippy
+
+
+      # - name: Check application status
+      #   run: curl http://localhost:8080  # Assuming your application runs on port 9876
         
 
-      - name: Wait for the application to be available
-        run: |
-          npx wait-on http://localhost:8080 --timeout 600000
-          if [ $? -ne 0 ]; then
-            echo "The application did not start in time. Here is the log:"
-            cat ./WebstormProjects/app.log
-            exit 1
-          fi
+      # - name: Wait for the application to be available
+      #   run: |
+      #     npx wait-on http://localhost:8080 --timeout 600000
+      #     if [ $? -ne 0 ]; then
+      #       echo "The application did not start in time. Here is the log:"
+      #       cat ./WebstormProjects/app.log
+      #       exit 1
+      #     fi
 
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v2
-        with:
-          working-directory: ./WebstormProjects
-          start: npm test
-          wait-on: http://localhost:8080
+      # - name: Run Cypress tests
+      #   uses: cypress-io/github-action@v2
+      #   with:
+      #     working-directory: ./WebstormProjects
+      #     start: npm test
+      #     wait-on: http://localhost:8080
+
+      - name: Build Backend
+        run: |
+         cd backend
+         cargo build --release
+
 
   deploy:
     runs-on: ubuntu-latest
