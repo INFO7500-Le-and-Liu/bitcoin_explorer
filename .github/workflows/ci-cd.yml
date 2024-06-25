@@ -85,6 +85,15 @@ jobs:
     - name: Deploy to Heroku
       uses: akhileshns/heroku-deploy@v3.7.8
       with:
-        heroku_api_key: ${{ secrets.HEROKU_ANGULAR_API_KEY }}
         heroku_app_name: 'testangular'
         heroku_email: 'lehong200012010@gmail.com'
+
+        
+    - name: Deploy to Heroku
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_ANGULAR_API_KEY }}
+      run: |
+        heroku create 'testangular' || true
+        heroku buildpacks:add --app 'testangular' https://github.com/heroku/heroku-buildpack-nodejs
+        heroku buildpacks:add --app'testangular' https://github.com/emk/heroku-buildpack-rust
+        git push https://heroku:$HEROKU_ANGULAR_API_KEY@git.heroku.com/'testangular'.git HEAD:main
