@@ -44,6 +44,7 @@ jobs:
         cd WebstormProjects
         npx playwright install --with-deps
 
+    # Uncomment the following steps if you want to run Playwright tests
     # - name: Run Playwright Tests
     #   run: |
     #     cd WebstormProjects
@@ -56,7 +57,8 @@ jobs:
     #     path: WebstormProjects/playwright-report/
     #     retention-days: 30
 
-    # # Backend setup for client
+    # Backend setup for client
+    # Uncomment if you need to build the backend client
     # - name: Set up Rust for client
     #   uses: actions-rs/toolchain@v1
     #   with:
@@ -69,7 +71,8 @@ jobs:
     #     cd backend/client
     #     cargo build --release
 
-    # # Backend setup for mysql_api
+    # Backend setup for mysql_api
+    # Uncomment if you need to build the backend mysql_api
     # - name: Set up Rust for mysql_api
     #   uses: actions-rs/toolchain@v1
     #   with:
@@ -82,12 +85,11 @@ jobs:
     #     cd backend/mysql_api
     #     cargo build --release
 
-        
     - name: Deploy to Heroku
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_ANGULAR_API_KEY }}
       run: |
-        heroku create 'testangular' || true
-        heroku buildpacks:add --app 'testangular' https://github.com/heroku/heroku-buildpack-nodejs
-        heroku buildpacks:add --app'testangular' https://github.com/emk/heroku-buildpack-rust
-        git push https://heroku:$HEROKU_ANGULAR_API_KEY@git.heroku.com/'testangular'.git HEAD:main
+        heroku create testangular || true
+        heroku buildpacks:add --app testangular https://github.com/heroku/heroku-buildpack-nodejs
+        heroku buildpacks:add --app testangular https://github.com/emk/heroku-buildpack-rust
+        git push https://heroku:${{ secrets.HEROKU_ANGULAR_API_KEY }}@git.heroku.com/testangular.git HEAD:main --force
