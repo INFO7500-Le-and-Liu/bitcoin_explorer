@@ -82,12 +82,6 @@ jobs:
     #     cd backend/mysql_api
     #     cargo build --release
 
-    - name: Deploy to Heroku
-      uses: akhileshns/heroku-deploy@v3.7.8
-      with:
-        heroku_app_name: 'testangular'
-        heroku_email: 'lehong200012010@gmail.com'
-
         
     - name: Deploy to Heroku
       env:
