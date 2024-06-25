@@ -3,7 +3,7 @@
 use rocket::serde::json::Json;
 use rocket::figment::Figment;
 use rocket_cors::{CorsOptions, AllowedOrigins};
-
+use std::io::{self, Write};
 // use rocket::figment::{Figment, providers::{Format, Toml, Env}};
 // use mysql::Pool;
 
@@ -39,8 +39,13 @@ fn get_news_handler() -> Json<Vec<NewsData>> {
 
 #[launch]
 fn rocket() -> _ {
-    let port:u32 = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string()).parse().unwrap();
-    println!("read the heroku port:{}", port);
+    let port: u32 = std::env::var("PORT").expect("PORT environment variable not set").parse().expect("Invalid PORT");
+    println!("Using port: {}", port);
+    io::stdout().flush().unwrap();
+
+
+    // let port:u32 = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string()).parse().unwrap();
+    // println!("read the heroku port:{}", port);
 
     let figment = Figment::from(rocket::Config::default())
         .merge(("address", "0.0.0.0"))
