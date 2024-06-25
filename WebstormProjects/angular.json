@@ -107,5 +107,8 @@
       }
     }
   },
-  "defaultProject": "WebstormProjects"
+  "defaultProject": "WebstormProjects",
+  "cli": {
+    "analytics": false
+  }
 }
