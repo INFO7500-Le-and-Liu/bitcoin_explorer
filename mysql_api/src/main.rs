@@ -47,6 +47,12 @@ fn rocket() -> _ {
     println!("Using port: {}", port);
     io::stdout().flush().unwrap();
 
+    //----------testing -----------
+    let hostname = std::env::var("DB_HOSTNAME").unwrap_or_else(|_| "default_host".to_string());
+    let username = std::env::var("DB_USERNAME").unwrap_or_else(|_| "default_user".to_string());
+    let password = std::env::var("DB_PASSWORD").unwrap_or_else(|_| "default_password".to_string());
+    println!("env var testing: {} {} {}", hostname, username, password);
+
 
     // let port:u32 = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string()).parse().unwrap();
     // println!("read the heroku port:{}", port);
