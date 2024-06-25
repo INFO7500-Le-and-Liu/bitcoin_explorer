@@ -1,52 +1,52 @@
-# use rust nightly image
-FROM rust:latest
-
-WORKDIR /usr/src/app
-
-# change to nightly to set CORS
-RUN rustup default nightly
-
-COPY . .
-
-# build the project to release
-RUN cargo build --release
-
-# set the command to run zhe project
-# CMD ["./target/release/mysql_api"]
-CMD ["cargo", "run", "--release"]
-
-# # Heroku
-# # Stage 1: Build the application using Rust nightly
-# FROM rust:latest as builder
+# # use rust nightly image
+# FROM rust:latest
 
 # WORKDIR /usr/src/app
 
-# # Use Rust nightly for compatibility with Rocket
+# # change to nightly to set CORS
 # RUN rustup default nightly
 
-# # Copy the entire project
 # COPY . .
 
-# # Build the project in release mode to optimize the binary
+# # build the project to release
 # RUN cargo build --release
 
-# # Stage 2: Create a minimal runtime environment
-# # Use Ubuntu 20.04 LTS as base image
-# FROM ubuntu:22.04
+# # set the command to run zhe project
+# # CMD ["./target/release/mysql_api"]
+# CMD ["cargo", "run", "--release"]
 
-# WORKDIR /app
+# Heroku
+# Stage 1: Build the application using Rust nightly
+FROM rust:latest as builder
 
-# # Install necessary runtime dependencies for a typical Rust app
-# # Include software-properties-common to manage repositories and utilities
-# # Avoiding prompts during package installation (DEBIAN_FRONTEND)
-# RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-#     ca-certificates \
-#     libssl3 \  
-#     openssl \
-#     && rm -rf /var/lib/apt/lists/*
+WORKDIR /usr/src/app
 
-# # Copy the built executable from the builder stage
-# COPY --from=builder /usr/src/app/target/release/mysql_api /app/
+# Use Rust nightly for compatibility with Rocket
+RUN rustup default nightly
 
-# # Set the command to run the project
-# CMD ["./mysql_api"]
+# Copy the entire project
+COPY . .
+
+# Build the project in release mode to optimize the binary
+RUN cargo build --release
+
+# Stage 2: Create a minimal runtime environment
+# Use Ubuntu 20.04 LTS as base image
+FROM ubuntu:22.04
+
+WORKDIR /app
+
+# Install necessary runtime dependencies for a typical Rust app
+# Include software-properties-common to manage repositories and utilities
+# Avoiding prompts during package installation (DEBIAN_FRONTEND)
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    ca-certificates \
+    libssl3 \  
+    openssl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the built executable from the builder stage
+COPY --from=builder /usr/src/app/target/release/mysql_api /app/
+
+# Set the command to run the project
+CMD ["./mysql_api"]

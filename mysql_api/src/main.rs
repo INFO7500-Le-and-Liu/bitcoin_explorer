@@ -17,8 +17,10 @@ use {
 
 #[get("/blocks")]
 fn get_blocks_handler() -> Json<Vec<BlockData>> {
-    let pool = get_mysql_connection().expect("Failed to get MySQL connection pool");
-    let mut conn = pool.get_conn().expect("Failed to get connection from pool");
+    // let pool = get_mysql_connection().expect("Failed to get MySQL connection pool");
+    // let mut conn = pool.get_conn().expect("Failed to get connection from pool");
+
+    let mut conn = get_mysql_connection().expect("failed to connect");
 
     match get_blocks(&mut conn) {
         Ok(blocks) => Json(blocks),
@@ -28,8 +30,10 @@ fn get_blocks_handler() -> Json<Vec<BlockData>> {
 
 #[get("/news")]
 fn get_news_handler() -> Json<Vec<NewsData>> {
-    let pool = get_mysql_connection().expect("Failed to get MySQL connection pool");
-    let mut conn = pool.get_conn().expect("Failed to get connection from pool");
+    // let pool = get_mysql_connection().expect("Failed to get MySQL connection pool");
+    // let mut conn = pool.get_conn().expect("Failed to get connection from pool");
+
+    let mut conn = get_mysql_connection().expect("failed to connect");
 
     match get_news(&mut conn) {
         Ok(news) => Json(news),
