@@ -13,15 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deploy client to Heroku
-        run: |
-          cd client
-          docker build -t registry.heroku.com/bitcoinexplore/worker .
-          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
-          docker push registry.heroku.com/bitcoinexplore/worker
-          heroku container:release worker -a bitcoinexplore
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+      # - name: Deploy client to Heroku
+      #   run: |
+      #     cd client
+      #     docker build -t registry.heroku.com/bitcoinexplore/worker .
+      #     echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+      #     docker push registry.heroku.com/bitcoinexplore/worker
+      #     heroku container:release worker -a bitcoinexplore
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
 
       - name: Deploy mysql-api to Heroku
         run: |
@@ -55,12 +55,12 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
 
-      - name: Deploy frontend to Heroku
-        run: |
-          cd WebstormProjects
-          docker build -t registry.heroku.com/bitcoinexplorefront/web .
-          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
-          docker push registry.heroku.com/bitcoinexplorefront/web
-          heroku container:release web -a bitcoinexplorefront
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+      # - name: Deploy frontend to Heroku
+      #   run: |
+      #     cd WebstormProjects
+      #     docker build -t registry.heroku.com/bitcoinexplorefront/web .
+      #     echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+      #     docker push registry.heroku.com/bitcoinexplorefront/web
+      #     heroku container:release web -a bitcoinexplorefront
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
