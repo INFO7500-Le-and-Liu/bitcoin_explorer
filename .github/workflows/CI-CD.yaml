@@ -26,12 +26,34 @@ jobs:
       - name: Deploy mysql-api to Heroku
         run: |
           cd mysql_api
-          docker build -t registry.heroku.com/bitcoinexploreapi/mysql-api .
-          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
-          docker push registry.heroku.com/bitcoinexploreapi/mysql-api
-          heroku container:release mysql-api -a bitcoinexploreapi
+
+          rm -rf .git 
+
+          echo "target/" >> .gitignore
+          echo "*.log" >> .gitignore
+          echo "*.tmp" >> .gitignore
+          echo "node_modules/" >> .gitignore
+          echo "*.lock" >> .gitignore
+          echo "*.tar.gz" >> .gitignore
+          echo "*.zip" >> .gitignore
+          echo "*.bin" >> .gitignore
+          echo "*.iso" >> .gitignore
+          echo "*.dmg" >> .gitignore
+          echo ".vscode/" >> .gitignore
+          echo ".idea/" >> .gitignore
+          echo ".DS_Store" >> .gitignore
+          echo "Thumbs.db" >> .gitignore
+
+          git init
+          git add .
+          git commit -m "Deploy Rust app to Heroku"
+
+          heroku buildpacks:set emk/rust -a bitcoinexploreapi
+          heroku git:remote -a bitcoinexploreapi
+          git push heroku main --force
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
 
       - name: Deploy frontend to Heroku
         run: |
