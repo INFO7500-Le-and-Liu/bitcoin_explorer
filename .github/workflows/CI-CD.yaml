@@ -53,7 +53,7 @@ jobs:
           git add .
           git commit -m "Deploy Rust app to Heroku"
 
-          heroku buildpacks:set emk/rust -a bitcoinexploreapi
+          # heroku buildpacks:set emk/rust -a bitcoinexploreapi
           heroku git:remote -a bitcoinexploreapi
           git push heroku main --force
         env:
