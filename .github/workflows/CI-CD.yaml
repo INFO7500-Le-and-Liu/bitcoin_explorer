@@ -17,11 +17,6 @@ jobs:
         run: |
           git config --global user.name "dongyul1u"
           git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
-      
-      - name: Login to Heroku
-        env: 
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:login 
 
       # - name: Deploy client to Heroku
       #   run: |
@@ -36,9 +31,9 @@ jobs:
       - name: Deploy mysql-api to Heroku
         run: |
           cd mysql_api
-          
-          git config --global user.name "dongyul1u"
-          git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
+
+          # git config --global user.name "dongyul1u"
+          # git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
 
           rm -rf .git 
 
@@ -57,6 +52,8 @@ jobs:
           echo ".DS_Store" >> .gitignore
           echo "Thumbs.db" >> .gitignore
 
+          git config --global user.name "dongyul1u"
+          git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
           git init
           git checkout -b main
           git add .
