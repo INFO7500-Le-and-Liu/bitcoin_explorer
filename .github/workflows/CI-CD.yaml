@@ -19,8 +19,9 @@ jobs:
           git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
       
       - name: Login to Heroku
-        run: echo ${{ secrets.HEROKU_API_KEY_LDY }} | heroku auth:token
-
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login 
 
       # - name: Deploy client to Heroku
       #   run: |
