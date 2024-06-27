@@ -28,6 +28,11 @@ jobs:
       #   env:
       #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
 
+      - name: Configure Git to use Heroku credentials
+        run: |
+          git config --global credential.helper store
+          echo "https://heroku:${{ secrets.HEROKU_API_KEY_LDY }}@git.heroku.com" > ~/.git-credentials
+
       - name: Deploy mysql-api to Heroku
         run: |
           cd mysql_api
