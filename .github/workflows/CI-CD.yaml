@@ -67,7 +67,7 @@ jobs:
           heroku container:login 
           # heroku buildpacks:set emk/rust -a bitcoinexploreapi
           heroku git:remote -a bitcoinexploreapi
-          git push heroku main
+          git push heroku main --force
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
