@@ -18,6 +18,14 @@ jobs:
           git config --global user.name "dongyul1u"
           git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
 
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Login to Heroku
+        run: echo ${{ secrets.HEROKU_API_KEY_LDY }} | heroku auth:token
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+
       - name: Deploy client to Heroku
         run: |
           cd client
@@ -37,11 +45,10 @@ jobs:
         run: |
           cd mysql_api
 
-          # git config --global user.name "dongyul1u"
-          # git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
-
+          # Remove existing Git repository (if any)
           rm -rf .git 
 
+          # Configure .gitignore file to exclude unnecessary files and directories
           echo "target/" >> .gitignore
           echo "*.log" >> .gitignore
           echo "*.tmp" >> .gitignore
@@ -57,27 +64,45 @@ jobs:
           echo ".DS_Store" >> .gitignore
           echo "Thumbs.db" >> .gitignore
 
-          git config --global user.name "dongyul1u"
-          git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
+          # Initialize new Git repository and create main branch
           git init
           git checkout -b main
           git add .
           git commit -m "Deploy Rust app to Heroku"
 
-          heroku container:login 
-          # heroku buildpacks:set emk/rust -a bitcoinexploreapi
+          # Add Heroku remote repository and push code to Heroku
           heroku git:remote -a bitcoinexploreapi
           git push heroku main --force
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
 
-      # - name: Deploy frontend to Heroku
-      #   run: |
-      #     cd WebstormProjects
-      #     docker build -t registry.heroku.com/bitcoinexplorefront/web .
-      #     echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
-      #     docker push registry.heroku.com/bitcoinexplorefront/web
-      #     heroku container:release web -a bitcoinexplorefront
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+      - name: Deploy frontend to Heroku
+        run: |
+          cd WebstormProjects
+
+          # Install dependencies
+          npm install
+
+          # Build Angular application
+          npm run build --prod
+
+          # Ensure .gitignore file is correctly configured
+          echo "dist/" >> .gitignore
+          echo "node_modules/" >> .gitignore
+
+          # Remove existing Git repository (if any)
+          rm -rf .git 
+
+          # Initialize new Git repository and create main branch
+          git init
+          git checkout -b main
+          git add .
+          git commit -m "Deploy Angular app to Heroku"
+
+          # Add Heroku remote repository and push code to Heroku
+          heroku git:remote -a bitcoinexplorefront
+          git push heroku main --force
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
