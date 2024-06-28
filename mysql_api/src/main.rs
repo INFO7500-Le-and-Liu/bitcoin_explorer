@@ -1,9 +1,10 @@
 #[macro_use] extern crate rocket;
+extern crate serde_json;
+use std::fmt::format;
 
 use rocket::serde::json::Json;
 use rocket::figment::Figment;
 use rocket_cors::{CorsOptions, AllowedOrigins};
-use std::io::{self, Write};
 // use rocket::figment::{Figment, providers::{Format, Toml, Env}};
 // use mysql::Pool;
 
@@ -14,6 +15,13 @@ use {
     db::{ get_blocks, get_mysql_connection, get_news},
     model::{BlockData, NewsData},
 };
+
+#[get("/")]
+fn index() -> String {
+    // let port = std::env::var("PORT").unwrap_or_else(|_| "8000".to_string());
+    // format!("Application running on port: {}", port)
+    format!("Hello World")
+}
 
 #[get("/blocks")]
 fn get_blocks_handler() -> Json<Vec<BlockData>> {
@@ -41,21 +49,38 @@ fn get_news_handler() -> Json<Vec<NewsData>> {
     }
 }
 
+// fn main() {
+//     // 
+//     let block_data = get_blocks_handler();
+//     match serde_json::to_string(&block_data.0) {
+//         Ok(json_str) => println!("Blocks JSON: {}", json_str),
+//         Err(e) => println!("Failed to serialize block data: {}", e),
+//     }
+
+//     // 
+//     let news_data = get_news_handler();
+//     match serde_json::to_string(&news_data.0) {
+//         Ok(json_str) => println!("News JSON: {}", json_str),
+//         Err(e) => println!("Failed to serialize news data: {}", e),
+//     }
+// }
+
+
 #[launch]
 fn rocket() -> _ {
-    let port: u32 = std::env::var("PORT").expect("PORT environment variable not set").parse().expect("Invalid PORT");
-    println!("Using port: {}", port);
-    io::stdout().flush().unwrap();
+    // let port: u32 = std::env::var("PORT").expect("PORT environment variable not set").parse().expect("Invalid PORT");
+    // println!("Using port: {}", port);
+    // io::stdout().flush().unwrap();
 
-    //----------testing -----------
-    let hostname = std::env::var("DB_HOSTNAME").unwrap_or_else(|_| "default_host".to_string());
-    let username = std::env::var("DB_USERNAME").unwrap_or_else(|_| "default_user".to_string());
-    let password = std::env::var("DB_PASSWORD").unwrap_or_else(|_| "default_password".to_string());
-    println!("env var testing: {} {} {}", hostname, username, password);
+    let block_data = get_blocks_handler();
+    match serde_json::to_string(&block_data.0) {
+        Ok(json_str) => println!("Blocks JSON: {}", json_str),
+        Err(e) => println!("Failed to serialize block data: {}", e),
+    }
 
 
-    // let port:u32 = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string()).parse().unwrap();
-    // println!("read the heroku port:{}", port);
+    let port:u32 = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string()).parse().unwrap();
+    println!("read the heroku port:{}", port);
 
     let figment = Figment::from(rocket::Config::default())
         .merge(("address", "0.0.0.0"))
@@ -65,6 +90,7 @@ fn rocket() -> _ {
         "http://frontend:4200", // allow port
         "http://localhost:4200",
         "http://0.0.0.0:4200",
+        "https://bitcoinexplorefront-02f3236067aa.herokuapp.com",
     ]);
     
     let cors = CorsOptions {
@@ -76,6 +102,6 @@ fn rocket() -> _ {
     .expect("Failed to create CORS fairing");
 
     rocket::custom(figment)
-    .mount("/", routes![get_blocks_handler, get_news_handler])
+    .mount("/", routes![index,get_blocks_handler, get_news_handler])
     .attach(cors) // add CORS config
 }
