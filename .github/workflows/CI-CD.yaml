@@ -77,6 +77,11 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
 
+      - name: Set up Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
       - name: Deploy frontend to Heroku
         run: |
           cd WebstormProjects
