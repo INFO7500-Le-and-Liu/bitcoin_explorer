@@ -68,17 +68,6 @@ fn get_news_handler() -> Json<Vec<NewsData>> {
 
 #[launch]
 fn rocket() -> _ {
-    // let port: u32 = std::env::var("PORT").expect("PORT environment variable not set").parse().expect("Invalid PORT");
-    // println!("Using port: {}", port);
-    // io::stdout().flush().unwrap();
-
-    let block_data = get_blocks_handler();
-    match serde_json::to_string(&block_data.0) {
-        Ok(json_str) => println!("Blocks JSON: {}", json_str),
-        Err(e) => println!("Failed to serialize block data: {}", e),
-    }
-
-
     let port:u32 = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string()).parse().unwrap();
     println!("read the heroku port:{}", port);
 

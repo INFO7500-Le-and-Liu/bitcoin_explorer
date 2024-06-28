@@ -58,7 +58,7 @@ pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
     let password = env::var("DB_PASSWORD").unwrap_or_else(|_| "tk7s231xgov5fblm".to_string());
     let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "if6on175le9kpi29".to_string());
 
-    println!("{} {} {} {}", hostname, username, password, database_name);
+    // println!("{} {} {} {}", hostname, username, password, database_name);
 
     let builder = OptsBuilder::new()
         .ip_or_hostname(Some(hostname))
