@@ -7,26 +7,45 @@ use{
     dotenv::dotenv, 
     mysql::{*,prelude::*, Error as MySQLError, OptsBuilder, Pool, PooledConn}, 
     std::result::Result as StdResult,
-
+    std::env
 };
 
 pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
+    // let builder = OptsBuilder::new()
+    //     .ip_or_hostname(Some(dotenv::var("DB_HOSTNAME").expect("Failed to load hostname")))
+    //     .user(Some(dotenv::var("DB_USERNAME").expect("Failed to load username")))
+    //     .pass(Some(dotenv::var("DB_PASSWORD").expect("Failed to load password")));
+
+    // let pool = Pool::new(builder)?;
+    // let conn = pool.get_conn()?;
+    // Ok(conn)
+    #[cfg(debug_assertions)]    
+    dotenv().ok();
+    let hostname = env::var("DB_HOSTNAME").unwrap_or_else(|_| "default_host".to_string());
+    let username = env::var("DB_USERNAME").unwrap_or_else(|_| "default_user".to_string());
+    let password = env::var("DB_PASSWORD").unwrap_or_else(|_| "default_password".to_string());
+
+    // println!("{} {} {}", hostname, username, password);
+
     let builder = OptsBuilder::new()
-        .ip_or_hostname(Some(dotenv::var("DB_HOSTNAME").expect("Failed to load hostname")))
-        .user(Some(dotenv::var("DB_USERNAME").expect("Failed to load username")))
-        .pass(Some(dotenv::var("DB_PASSWORD").expect("Failed to load password")));
+        .ip_or_hostname(Some(hostname))
+        .user(Some(username))
+        .pass(Some(password));
 
     let pool = Pool::new(builder)?;
+
+    // Retrieve a connection from the pool
     let conn = pool.get_conn()?;
+    println!("Successfully retrieved connection from pool."); // Debug message
     Ok(conn)
 } 
 
 pub fn create_database_and_table(conn: &mut PooledConn) -> StdResult<(), MySQLError> {
-    dotenv().ok();
-    let database_name = dotenv::var("DB_DATABASE").expect("Failed to load database name");
-    let block_table_name = dotenv::var("DB_BLOCK_TABLE").expect("Failed to load table name");
-    let news_table_name = dotenv::var("DB_NEWS_TABLE").expect("Failed to load table name");
-
+    #[cfg(debug_assertions)]
+    dotenv::dotenv().ok();
+    let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "bitcoin_blockchians".to_string());
+    let block_table_name = env::var("DB_BLOCK_TABLE").unwrap_or_else(|_| "blocks".to_string());
+    let news_table_name = env::var("DB_NEWS_TABLE").unwrap_or_else(|_| "news".to_string());
     // database
     let s1 = format!("CREATE DATABASE IF NOT EXISTS {}",&database_name);
     let s2 = format!("USE {}",&database_name);
@@ -78,8 +97,9 @@ pub fn init_database() -> StdResult<PooledConn, MySQLError> {
 
 
 pub fn insert_block_data(conn: &mut PooledConn, block: &BlocksData) -> StdResult<(), MySQLError> {
+    #[cfg(debug_assertions)]    
     dotenv().ok();
-    let table_name = dotenv::var("DB_BLOCK_TABLE").expect("Failed to load table name");
+    let table_name = env::var("DB_BLOCK_TABLE").unwrap_or_else(|_| "blocks".to_string());
 
     // Convert Unix time to normal time using timestamp_opt
     let datetime = block.unix_time_to_datetime();
@@ -100,8 +120,9 @@ pub fn insert_block_data(conn: &mut PooledConn, block: &BlocksData) -> StdResult
 }
 
 pub fn insert_news_data(conn: &mut PooledConn, news: &NewsData) -> StdResult<(), MySQLError> {
+    #[cfg(debug_assertions)]   
     dotenv().ok();
-    let table_name = dotenv::var("DB_NEWS_TABLE").expect("Failed to load table name");
+    let table_name = env::var("DB_NEWS_TABLE").unwrap_or_else(|_| "news".to_string());
     let query = format!(
         "INSERT IGNORE INTO {} (id, title, url, body, source, tags) VALUES (:id, :title, :url, :body, :source, :tags)",
         table_name

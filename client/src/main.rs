@@ -16,7 +16,6 @@ use {
 
 fn main() {
 
-
     let latest_block : LatestBlock = blocks_info::latest_blocks_request();
 
     let mut height = latest_block.height - 10;
@@ -36,7 +35,7 @@ fn main() {
             match init_database() {
                 Ok(mut conn) => {
                     println!("Database initialized successfully with connection");
-                    for i in 0..20 {
+                    for i in 0..2 {
                         insert_news_data(&mut conn, &news.data[i]).expect("failed to insert data");
                     }
                     conn
@@ -48,9 +47,9 @@ fn main() {
             };
         }
         // println!("request block: {} ...",height);
-        let response : BlocksData = blocks_info::request_block_by_height(&height);
-        sleep(Duration::from_secs(10));
+        let response : BlocksData = blocks_info::request_block_by_height(&height).expect("faile to parse");
         println!("request latest block ...");
+        sleep(Duration::from_secs(10));
         let latest : LatestBlock = blocks_info::latest_blocks_request();
         
         // debug
@@ -77,7 +76,6 @@ fn main() {
         timer += 1;
         println!("---------next round----------");//debug
         sleep(Duration::from_secs(10));
-       
     }
 }
 
