@@ -3,7 +3,7 @@ name: Deploy to Heroku
 on:
   push:
     branches:
-      - ldy  # when push to ldy
+      - main  # when push to ldy
 
 jobs:
   build-and-deploy:
