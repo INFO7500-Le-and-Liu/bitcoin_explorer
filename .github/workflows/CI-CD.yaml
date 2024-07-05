@@ -45,40 +45,40 @@ jobs:
         run: |
           cd mysql_api
 
-          # # Remove existing Git repository (if any)
-          # rm -rf .git 
+          # Remove existing Git repository (if any)
+          rm -rf .git 
 
-          # # Configure .gitignore file to exclude unnecessary files and directories
-          # echo "target/" >> .gitignore
-          # echo "*.log" >> .gitignore
-          # echo "*.tmp" >> .gitignore
-          # echo "node_modules/" >> .gitignore
-          # echo "*.lock" >> .gitignore
-          # echo "*.tar.gz" >> .gitignore
-          # echo "*.zip" >> .gitignore
-          # echo "*.bin" >> .gitignore
-          # echo "*.iso" >> .gitignore
-          # echo "*.dmg" >> .gitignore
-          # echo ".vscode/" >> .gitignore
-          # echo ".idea/" >> .gitignore
-          # echo ".DS_Store" >> .gitignore
-          # echo "Thumbs.db" >> .gitignore
+          # Configure .gitignore file to exclude unnecessary files and directories
+          echo "target/" >> .gitignore
+          echo "*.log" >> .gitignore
+          echo "*.tmp" >> .gitignore
+          echo "node_modules/" >> .gitignore
+          echo "*.lock" >> .gitignore
+          echo "*.tar.gz" >> .gitignore
+          echo "*.zip" >> .gitignore
+          echo "*.bin" >> .gitignore
+          echo "*.iso" >> .gitignore
+          echo "*.dmg" >> .gitignore
+          echo ".vscode/" >> .gitignore
+          echo ".idea/" >> .gitignore
+          echo ".DS_Store" >> .gitignore
+          echo "Thumbs.db" >> .gitignore
 
-          # # Initialize new Git repository and create main branch
-          # git init
-          # git checkout -b main
-          # git add .
-          # git commit -m "Deploy Rust app to Heroku"
+          # Initialize new Git repository and create main branch
+          git init
+          git checkout -b main
+          git add .
+          git commit -m "Deploy Rust app to Heroku"
 
-          # # Add Heroku remote repository and push code to Heroku
-          # heroku git:remote -a bitcoinexploreapi
-          # git push heroku main --force
+          # Add Heroku remote repository and push code to Heroku
+          heroku git:remote -a bitcoinexploreapi
+          git push heroku main --force
 
 
-          docker build -t registry.heroku.com/bitcoinexploreapi/web1 .
-          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
-          docker push registry.heroku.com/bitcoinexploreapi/web1
-          heroku container:release web1 -a bitcoinexploreapi
+          # docker build -t registry.heroku.com/bitcoinexploreapi/web .
+          # echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+          # docker push registry.heroku.com/bitcoinexploreapi/web
+          # heroku container:release web -a bitcoinexploreapi
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
