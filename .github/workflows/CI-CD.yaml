@@ -74,7 +74,7 @@ jobs:
           heroku git:remote -a bitcoinexploreapi
           git push heroku main --force
 
-
+          # #using docker
           # docker build -t registry.heroku.com/bitcoinexploreapi/web .
           # echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
           # docker push registry.heroku.com/bitcoinexploreapi/web
