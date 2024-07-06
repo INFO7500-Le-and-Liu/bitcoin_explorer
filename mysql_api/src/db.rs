@@ -7,41 +7,6 @@ use{
     dotenv::dotenv
 };
 
-// pub fn get_mysql_connection() -> StdResult<Pool, MySQLError> {
-//     // local environment
-//     // let builder = OptsBuilder::new()
-//     //     .ip_or_hostname(Some(dotenv::var("DB_HOSTNAME").expect("Failed to load hostname")))
-//     //     .user(Some(dotenv::var("DB_USERNAME").expect("Failed to load username")))
-//     //     .pass(Some(dotenv::var("DB_PASSWORD").expect("Failed to load password")))
-//     //     .db_name(Some(dotenv::var("DB_DATABASE").expect("Failed to load database name")));
-//     // // return a pool not a connection
-//     // // rocket will handel the pool
-//     // println!("get the pools success"); // debug
-//     // Ok(Pool::new(builder).expect("Failed to get Pool"))
-
-//     #[cfg(debug_assertions)]    
-//     dotenv().ok();
-
-//     // CI/CD 
-//     let hostname = env::var("DB_HOSTNAME").unwrap_or_else(|_| "default_host".to_string());
-//     let username = env::var("DB_USERNAME").unwrap_or_else(|_| "default_user".to_string());
-//     let password = env::var("DB_PASSWORD").unwrap_or_else(|_| "default_password".to_string());
-//     let database = env::var("DB_DATABASE").unwrap_or_else(|_| "default_db".to_string());
-
-//     let builder = OptsBuilder::new()
-//         .ip_or_hostname(Some(hostname))
-//         .user(Some(username))
-//         .pass(Some(password))
-//         .db_name(Some(database));
-
-//     // Attempt to create a connection pool
-//     let pool = Pool::new(builder)?;
-
-//     println!("Successfully created connection pool."); // Debug message
-//     Ok(pool)    
-// } 
-
-
 pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
     // let builder = OptsBuilder::new()
     //     .ip_or_hostname(Some(dotenv::var("DB_HOSTNAME").expect("Failed to load hostname")))
@@ -56,7 +21,7 @@ pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
     let hostname = env::var("DB_HOSTNAME").unwrap_or_else(|_| "f2fbe0zvg9j8p9ng.cbetxkdyhwsb.us-east-1.rds.amazonaws.com".to_string());
     let username = env::var("DB_USERNAME").unwrap_or_else(|_| "r4xiw6ghgvuy7ozf".to_string());
     let password = env::var("DB_PASSWORD").unwrap_or_else(|_| "tk7s231xgov5fblm".to_string());
-    let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "if6on175le9kpi29".to_string());
+    // let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "if6on175le9kpi29".to_string());
 
     // println!("{} {} {} {}", hostname, username, password, database_name);
 
