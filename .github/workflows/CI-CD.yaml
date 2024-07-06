@@ -26,15 +26,15 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
 
-      # - name: Deploy client to Heroku
-      #   run: |
-      #     cd client
-      #     docker build -t registry.heroku.com/bitcoinexplore/worker .
-      #     echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
-      #     docker push registry.heroku.com/bitcoinexplore/worker
-      #     heroku container:release worker -a bitcoinexplore
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+      - name: Deploy client to Heroku
+        run: |
+          cd client
+          docker build -t registry.heroku.com/bitcoinexplore/worker .
+          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+          docker push registry.heroku.com/bitcoinexplore/worker
+          heroku container:release worker -a bitcoinexplore
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
 
       - name: Configure Git to use Heroku credentials
         run: |
@@ -57,32 +57,32 @@ jobs:
         with:
           node-version: '16'
 
-      # - name: Deploy frontend to Heroku
-      #   run: |
-      #     cd WebstormProjects
+      - name: Deploy frontend to Heroku
+        run: |
+          cd WebstormProjects
 
-      #     # Install dependencies
-      #     npm install
+          # Install dependencies
+          npm install
 
-      #     # Build Angular application
-      #     npm run build --prod
+          # Build Angular application
+          npm run build --prod
 
-      #     # Ensure .gitignore file is correctly configured
-      #     echo "dist/" >> .gitignore
-      #     echo "node_modules/" >> .gitignore
+          # Ensure .gitignore file is correctly configured
+          echo "dist/" >> .gitignore
+          echo "node_modules/" >> .gitignore
 
-      #     # Remove existing Git repository (if any)
-      #     rm -rf .git 
+          # Remove existing Git repository (if any)
+          rm -rf .git 
 
-      #     # Initialize new Git repository and create main branch
-      #     git init
-      #     git checkout -b main
-      #     git add .
-      #     git commit -m "Deploy Angular app to Heroku"
+          # Initialize new Git repository and create main branch
+          git init
+          git checkout -b main
+          git add .
+          git commit -m "Deploy Angular app to Heroku"
 
-      #     # Add Heroku remote repository and push code to Heroku
-      #     heroku git:remote -a bitcoinexplorefront
-      #     git push heroku main --force
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
-      #     HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
+          # Add Heroku remote repository and push code to Heroku
+          heroku git:remote -a bitcoinexplorefront
+          git push heroku main --force
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}

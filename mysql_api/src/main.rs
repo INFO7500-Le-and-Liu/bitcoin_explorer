@@ -5,8 +5,6 @@ use std::fmt::format;
 use rocket::serde::json::Json;
 use rocket::figment::Figment;
 use rocket_cors::{CorsOptions, AllowedOrigins};
-// use rocket::figment::{Figment, providers::{Format, Toml, Env}};
-// use mysql::Pool;
 
 
 mod db;
