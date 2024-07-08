@@ -18,9 +18,9 @@ pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
     // Ok(conn)
     #[cfg(debug_assertions)]    
     dotenv().ok();
-    let hostname = env::var("DB_HOSTNAME").unwrap_or_else(|_| "f2fbe0zvg9j8p9ng.cbetxkdyhwsb.us-east-1.rds.amazonaws.com".to_string());
-    let username = env::var("DB_USERNAME").unwrap_or_else(|_| "r4xiw6ghgvuy7ozf".to_string());
-    let password = env::var("DB_PASSWORD").unwrap_or_else(|_| "tk7s231xgov5fblm".to_string());
+    let hostname = env::var("DB_HOSTNAME").unwrap_or_else(|_| "hostname".to_string());
+    let username = env::var("DB_USERNAME").unwrap_or_else(|_| "user".to_string());
+    let password = env::var("DB_PASSWORD").unwrap_or_else(|_| "password".to_string());
     // let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "if6on175le9kpi29".to_string());
 
     // println!("{} {} {} {}", hostname, username, password, database_name);
@@ -41,7 +41,7 @@ pub fn get_mysql_connection() -> StdResult<PooledConn, MySQLError> {
 
 pub fn get_news(conn: &mut mysql::PooledConn) -> StdResult<Vec<NewsData>, MySQLError> {
     // Obtain the database name from the environment or use a default
-    let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "if6on175le9kpi29".to_string());
+    let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "database".to_string());
 
     // Select the database
     conn.query_drop(format!("USE {}", database_name))
@@ -78,7 +78,7 @@ pub fn get_news(conn: &mut mysql::PooledConn) -> StdResult<Vec<NewsData>, MySQLE
 
 pub fn get_blocks(conn: &mut mysql::PooledConn) -> StdResult<Vec<BlockData>, MySQLError> {
     // Obtain the database name from the environment or use a default
-    let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "if6on175le9kpi29".to_string());
+    let database_name = env::var("DB_DATABASE").unwrap_or_else(|_| "database".to_string());
 
     // Select the database
     conn.query_drop(format!("USE {}", database_name))

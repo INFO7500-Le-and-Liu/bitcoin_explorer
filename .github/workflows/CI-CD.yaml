@@ -47,6 +47,7 @@ jobs:
           docker build -t registry.heroku.com/bitcoinexploreapi/web .
           echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
           docker push registry.heroku.com/bitcoinexploreapi/web
+          # heroku buildpacks:set emk/rust -a bitcoinexploreapi # run at first time
           heroku container:release web -a bitcoinexploreapi
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
