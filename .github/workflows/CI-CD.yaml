@@ -29,10 +29,10 @@ jobs:
       - name: Deploy client to Heroku
         run: |
           cd client
-          docker build -t registry.heroku.com/bitcoinexplore/worker .
+          docker build -t registry.heroku.com/bitcoinexplore1/worker .
           echo ${{ secrets.HEROKU_API_KEY_LH }} | docker login --username=_ --password-stdin registry.heroku.com
-          docker push registry.heroku.com/bitcoinexplore/worker
-          heroku container:release worker -a bitcoinexplore
+          docker push registry.heroku.com/bitcoinexplore1/worker
+          heroku container:release worker -a bitcoinexplore1
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LH }}
 
@@ -45,11 +45,11 @@ jobs:
         run: |
           cd mysql_api
 
-          docker build -t registry.heroku.com/bitcoinexploreapi/web .
+          docker build -t registry.heroku.com/bitcoinexploreapi1/web .
           echo ${{ secrets.HEROKU_API_KEY_LH }} | docker login --username=_ --password-stdin registry.heroku.com
-          docker push registry.heroku.com/bitcoinexploreapi/web
-          heroku buildpacks:set emk/rust -a bitcoinexploreapi # run at first time
-          heroku container:release web -a bitcoinexploreapi
+          docker push registry.heroku.com/bitcoinexploreapi1/web
+          heroku buildpacks:set emk/rust -a bitcoinexploreapi1 # run at first time
+          heroku container:release web -a bitcoinexploreapi1
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LH }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LH }}
@@ -83,7 +83,7 @@ jobs:
           git commit -m "Deploy Angular app to Heroku"
 
           # Add Heroku remote repository and push code to Heroku
-          heroku git:remote -a bitcoinexplorefront
+          heroku git:remote -a bitcoinexplorefront1
           git push heroku main --force
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LH }}
