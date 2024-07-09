@@ -1,12 +1,10 @@
 #[macro_use] extern crate rocket;
 extern crate serde_json;
-use std::fmt::format;
+
 
 use rocket::serde::json::Json;
 use rocket::figment::Figment;
 use rocket_cors::{CorsOptions, AllowedOrigins};
-// use rocket::figment::{Figment, providers::{Format, Toml, Env}};
-// use mysql::Pool;
 
 
 mod db;
@@ -48,22 +46,6 @@ fn get_news_handler() -> Json<Vec<NewsData>> {
         Err(_) => Json(vec![]), // return empty if error
     }
 }
-
-// fn main() {
-//     // 
-//     let block_data = get_blocks_handler();
-//     match serde_json::to_string(&block_data.0) {
-//         Ok(json_str) => println!("Blocks JSON: {}", json_str),
-//         Err(e) => println!("Failed to serialize block data: {}", e),
-//     }
-
-//     // 
-//     let news_data = get_news_handler();
-//     match serde_json::to_string(&news_data.0) {
-//         Ok(json_str) => println!("News JSON: {}", json_str),
-//         Err(e) => println!("Failed to serialize news data: {}", e),
-//     }
-// }
 
 
 #[launch]
