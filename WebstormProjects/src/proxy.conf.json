@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://https://bitcoinexploreapi-95fb5674dd27.herokuapp.com/blocks",
+    "target": "https://bitcoinexploreapi1-6e93f3feebf6.herokuapp.com/blocks",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",

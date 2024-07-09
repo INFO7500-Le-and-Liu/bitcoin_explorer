@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<Block[]>('https://bitcoinexploreapi-95fb5674dd27.herokuapp.com/blocks').subscribe(data => {
+    this.http.get<Block[]>('https://bitcoinexploreapi1-6e93f3feebf6.herokuapp.com/blocks').subscribe(data => {
       this.blocks = data;
     });
   }

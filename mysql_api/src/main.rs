@@ -61,7 +61,7 @@ fn rocket() -> _ {
         "http://frontend:4200", // allow port
         "http://localhost:4200",
         "http://0.0.0.0:4200",
-        "https://bitcoinexplorefront-02f3236067aa.herokuapp.com",
+        "https://bitcoinexplorefront1-44442e571a5a.herokuapp.com/",
     ]);
     
     let cors = CorsOptions {

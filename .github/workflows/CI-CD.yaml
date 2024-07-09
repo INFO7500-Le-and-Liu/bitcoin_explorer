@@ -3,7 +3,7 @@ name: Deploy to Heroku
 on:
   push:
     branches:
-      - main  # when push to ldy
+      - main  # when push to LH
 
 jobs:
   build-and-deploy:
@@ -16,43 +16,43 @@ jobs:
       - name: Set up Git identity
         run: |
           git config --global user.name "dongyul1u"
-          git config --global user.email ${{ secrets.HEROKU_EMAIL_LDY }}
+          git config --global user.email ${{ secrets.HEROKU_EMAIL_LH }}
 
       - name: Install Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Login to Heroku
-        run: echo ${{ secrets.HEROKU_API_KEY_LDY }} | heroku auth:token
+        run: echo ${{ secrets.HEROKU_API_KEY_LH }} | heroku auth:token
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LH }}
 
       - name: Deploy client to Heroku
         run: |
           cd client
           docker build -t registry.heroku.com/bitcoinexplore/worker .
-          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+          echo ${{ secrets.HEROKU_API_KEY_LH }} | docker login --username=_ --password-stdin registry.heroku.com
           docker push registry.heroku.com/bitcoinexplore/worker
           heroku container:release worker -a bitcoinexplore
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LH }}
 
       - name: Configure Git to use Heroku credentials
         run: |
           git config --global credential.helper store
-          echo "https://heroku:${{ secrets.HEROKU_API_KEY_LDY }}@git.heroku.com" > ~/.git-credentials
+          echo "https://heroku:${{ secrets.HEROKU_API_KEY_LH }}@git.heroku.com" > ~/.git-credentials
 
       - name: Deploy mysql-api to Heroku
         run: |
           cd mysql_api
 
           docker build -t registry.heroku.com/bitcoinexploreapi/web .
-          echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
+          echo ${{ secrets.HEROKU_API_KEY_LH }} | docker login --username=_ --password-stdin registry.heroku.com
           docker push registry.heroku.com/bitcoinexploreapi/web
           # heroku buildpacks:set emk/rust -a bitcoinexploreapi # run at first time
           heroku container:release web -a bitcoinexploreapi
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
-          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LH }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LH }}
 
       - name: Set up Node.js 16
         uses: actions/setup-node@v2
@@ -86,5 +86,5 @@ jobs:
           heroku git:remote -a bitcoinexplorefront
           git push heroku main --force
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LDY }}
-          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LDY }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LH }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL_LH }}
