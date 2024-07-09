@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BlockService } from '../block.service';
 import { Subscription } from 'rxjs';
 import { ChartType, ChartOptions, ChartDataSets} from 'chart.js';
@@ -11,10 +12,32 @@ import { Label } from 'ng2-charts';
 })
 
 export class BlockListComponent implements OnInit, OnDestroy {
+export class BlockListComponent implements OnInit, OnDestroy {
 
   blocks: any[] = [];
   news: any[] = [];
   displayedColumns_block: string[] = ['height_block', 'fee_block', 'hash_block'];
+  displayedColumns_news: string[] = ['id_news', 'title_news'];
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public barChartLabels: string[] = [];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public barChartData: ChartDataSets[] = [
+    { data: [], label: 'Fees' }
+  ];
+  public barChartData2: ChartDataSets[] = [
+    { data: [], label: 'N_tx' }
+  ];
+
+  private blockIntervalId: any;
+  private newsIntervalId: any;
+  private blockSubscription: Subscription = new Subscription();
+  private newsSubscription: Subscription = new Subscription();
   displayedColumns_news: string[] = ['id_news', 'title_news'];
 
   public barChartOptions: ChartOptions = {
