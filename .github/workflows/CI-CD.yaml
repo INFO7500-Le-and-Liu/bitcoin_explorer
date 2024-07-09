@@ -3,7 +3,7 @@ name: Deploy to Heroku
 on:
   push:
     branches:
-      - ldy  # when push to ldy
+      - main  # when push to ldy
 
 jobs:
   build-and-deploy:
@@ -44,6 +44,7 @@ jobs:
       - name: Deploy mysql-api to Heroku
         run: |
           cd mysql_api
+
           docker build -t registry.heroku.com/bitcoinexploreapi/web .
           echo ${{ secrets.HEROKU_API_KEY_LDY }} | docker login --username=_ --password-stdin registry.heroku.com
           docker push registry.heroku.com/bitcoinexploreapi/web

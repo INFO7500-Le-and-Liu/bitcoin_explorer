@@ -10,8 +10,6 @@ mod news_model;
 
 use {
     crate::blocks_model::BlocksData, blocks_model::LatestBlock, database_op::{init_database, insert_block_data,insert_news_data}, std::{thread::sleep, time::Duration}    
-    // dotenv,
-    // std::{io, thread, time},
 };
 
 fn main() {
