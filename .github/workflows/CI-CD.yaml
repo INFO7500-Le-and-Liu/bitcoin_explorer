@@ -15,7 +15,7 @@ jobs:
 
       - name: Set up Git identity
         run: |
-          git config --global user.name "dongyul1u"
+          git config --global user.name "Leonle30"
           git config --global user.email ${{ secrets.HEROKU_EMAIL_LH }}
 
       - name: Install Heroku CLI
@@ -48,7 +48,7 @@ jobs:
           docker build -t registry.heroku.com/bitcoinexploreapi/web .
           echo ${{ secrets.HEROKU_API_KEY_LH }} | docker login --username=_ --password-stdin registry.heroku.com
           docker push registry.heroku.com/bitcoinexploreapi/web
-          # heroku buildpacks:set emk/rust -a bitcoinexploreapi # run at first time
+          heroku buildpacks:set emk/rust -a bitcoinexploreapi # run at first time
           heroku container:release web -a bitcoinexploreapi
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY_LH }}
